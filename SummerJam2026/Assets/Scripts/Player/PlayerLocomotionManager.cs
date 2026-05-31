@@ -11,11 +11,16 @@ public class PlayerLocomotionManager : LocomotionManager
     private float verticalMovementInput;
     private float horizontalMovementInput;
 
+    private bool  isDrifting    = false;
+    private float turnHoldTimer = 0f;
+    private float neutralTimer  = 0f;
+    private bool  isInNeutral   = false;
+
     protected override void Awake()
     {
         base.Awake();
         playerCharacter = GetComponent<PlayerCharacterManager>();
-        statsManager = GetComponent<PlayerStatsManager>();
+        statsManager    = GetComponent<PlayerStatsManager>();
         inventoryManager = GetComponent<PlayerInventoryManager>();
     }
 
@@ -40,69 +45,120 @@ public class PlayerLocomotionManager : LocomotionManager
     {
         if (!canMove)
         {
-            verticalMovementInput = 0f;
+            verticalMovementInput   = 0f;
             horizontalMovementInput = 0f;
-            isSprinting = false;
+            isSprinting             = false;
         }
         else if (!canRotate)
         {
             horizontalMovementInput = 0f;
-            isSprinting = inputManager.IsBoosting;
+            isSprinting             = inputManager.IsBoosting;
         }
         else
         {
-            verticalMovementInput = inputManager.verticalInput;
+            verticalMovementInput   = inputManager.verticalInput;
             horizontalMovementInput = inputManager.horizontalInput;
-            isSprinting = inputManager.IsBoosting;
+            isSprinting             = inputManager.IsBoosting;
         }
     }
 
     protected override void HandleMovement()
     {
-        if (!canMove) return;
+        // AI Garbage, feels horrible, will be fixed later
+        if (!canMove)
+        {
+            isDrifting    = false;
+            currentFriction = 1f;
+            turnHoldTimer = 0f;
+            neutralTimer  = 0f;
+            isInNeutral   = false;
+            return;
+        }
 
         float maxSpd = statsManager.GetMaxSpeed();
-        float minSpd = statsManager.GetMinSpeed();
+        float dt     = Time.deltaTime;
 
-        // Vertical input: accelerate forward, brake/reverse, or auto-decelerate
+        // Neutral gear: pause at zero before reverse engages
+        if (isInNeutral)
+        {
+            neutralTimer += dt;
+            currentSpeed  = Mathf.MoveTowards(currentSpeed, 0f, statsManager.GetAutoDeceleration() * dt);
+            if (neutralTimer >= statsManager.GetReverseNeutralDelay())
+                isInNeutral = false;
+
+            playerCharacter.rb.linearVelocity = Vector2.Lerp(
+                playerCharacter.rb.linearVelocity,
+                transform.up * currentSpeed,
+                currentFriction
+            );
+            return;
+        }
+
+        // Acceleration / braking
         if (verticalMovementInput > 0f)
         {
-            float accel = statsManager.GetAcceleration();
+            float accel    = statsManager.GetAcceleration();
             if (isSprinting) accel *= statsManager.GetSprintSpeedMultiplier();
-            currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpd, accel * Time.deltaTime);
+            float speedCap = isDrifting ? statsManager.GetDriftingMaxSpeed() : maxSpd;
+            currentSpeed   = Mathf.MoveTowards(currentSpeed, speedCap, accel * dt);
         }
         else if (verticalMovementInput < 0f)
         {
-            float manualDecel = statsManager.GetManualDeceleration();
-            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpd, manualDecel * Time.deltaTime);
+            float prevSpeed = currentSpeed;
+            currentSpeed    = Mathf.MoveTowards(currentSpeed, statsManager.GetMinSpeed(), statsManager.GetManualDeceleration() * dt);
+
+            // Crossed zero: enter neutral instead of immediately reversing
+            if (prevSpeed > 0f && currentSpeed <= 0f)
+            {
+                currentSpeed = 0f;
+                isInNeutral  = true;
+                neutralTimer = 0f;
+            }
         }
         else
         {
-            float autoDecel = statsManager.GetAutoDeceleration();
-            currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, autoDecel * Time.deltaTime);
+            currentSpeed = Mathf.MoveTowards(currentSpeed, 0f, statsManager.GetAutoDeceleration() * dt);
         }
 
-        // Horizontal input: binary full-left or full-right turn, scaled by speed ratio
+        // Steering: binary direction, scaled by speed ratio, flipped in reverse
         if (Mathf.Abs(currentSpeed) > 0.01f && horizontalMovementInput != 0f)
         {
-            float turnDir = Mathf.Sign(horizontalMovementInput);
             float speedRatio = Mathf.Abs(currentSpeed) / maxSpd;
-            float turnSpeed = statsManager.GetTurnSpeed();
-            float rotation = turnDir * turnSpeed * speedRatio * Time.deltaTime;
-
-            // Flip turn direction when reversing so steering feels natural
+            float rotation   = Mathf.Sign(horizontalMovementInput) * statsManager.GetTurnSpeed() * speedRatio * dt;
             if (currentSpeed < 0f) rotation = -rotation;
-
             transform.Rotate(0f, 0f, -rotation);
         }
 
-        // Drift: lerp actual velocity toward heading direction using tire friction.
-        // Lower tireFriction = more drift (dirt terrain feel).
-        Vector2 targetVelocity = transform.up * currentSpeed;
+        // Drift activation: must be above speed threshold and hold a turn long enough
+        float driftThreshold = maxSpd * statsManager.GetDriftSpeedThreshold();
+        if (Mathf.Abs(currentSpeed) >= driftThreshold && Mathf.Abs(horizontalMovementInput) > 0f)
+        {
+            turnHoldTimer += dt;
+            if (turnHoldTimer >= statsManager.GetDriftEntryTime())
+                isDrifting = true;
+        }
+        else
+        {
+            turnHoldTimer = 0f;
+        }
+
+        // Drift deactivation: speed dropped back below threshold
+        if (isDrifting && Mathf.Abs(currentSpeed) < driftThreshold)
+            isDrifting = false;
+
+        // Friction: lerps to minFriction while drifting+turning, recovers to full grip otherwise
+        float targetFriction = (isDrifting && Mathf.Abs(horizontalMovementInput) > 0f)
+            ? statsManager.GetMinFriction()
+            : 1f;
+        float frictionRate = targetFriction < currentFriction
+            ? statsManager.GetFrictionDecayRate()
+            : statsManager.GetFrictionRecoveryRate();
+        currentFriction = Mathf.MoveTowards(currentFriction, targetFriction, frictionRate * dt);
+
         playerCharacter.rb.linearVelocity = Vector2.Lerp(
             playerCharacter.rb.linearVelocity,
-            targetVelocity,
-            statsManager.GetTireFriction() * Time.deltaTime
+            transform.up * currentSpeed,
+            currentFriction
         );
     }
 
@@ -113,15 +169,10 @@ public class PlayerLocomotionManager : LocomotionManager
 
     private void HandleFuelConsumption()
     {
-        if (isSprinting && Mathf.Abs(currentSpeed) > 0.01f)
-        {
-            float fuelConsumed = statsManager.GetFuelConsumptionRate() * statsManager.GetBoostingFuelConsumptionMultiplier() * Time.deltaTime;
-            inventoryManager.ConsumeFuel(fuelConsumed);
-        }
-        else if (Mathf.Abs(currentSpeed) > 0.01f)
-        {
-            float fuelConsumed = statsManager.GetFuelConsumptionRate() * Time.deltaTime;
-            inventoryManager.ConsumeFuel(fuelConsumed);
-        }
+        if (Mathf.Abs(currentSpeed) <= 0.01f) return;
+
+        float rate = statsManager.GetFuelConsumptionRate();
+        if (isSprinting) rate *= statsManager.GetBoostingFuelConsumptionMultiplier();
+        inventoryManager.ConsumeFuel(rate * Time.deltaTime);
     }
 }

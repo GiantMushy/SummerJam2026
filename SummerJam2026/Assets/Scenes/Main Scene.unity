@@ -397,7 +397,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -841,9 +841,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
   character: {fileID: 0}
-  defaultMaxSpeed: 16
+  defaultMaxSpeed: 20
   defaultMinSpeed: -6
-  defaultAcceleration: 6
+  defaultAcceleration: 8
   defaultAutoDeceleration: 6
   defaultManualDeceleration: 12
   defaultSprintSpeedMultiplier: 1.5
@@ -855,7 +855,13 @@ MonoBehaviour:
   defaultBoostingFuelConsumptionMultiplier: 2
   defaultMaxFuel: 100
   defaultMaxPassengers: 4
-  defaultTireFriction: 2
+  defaultMinFriction: 0.4
+  defaultDriftSpeedThreshold: 0.8
+  defaultDriftEntryTime: 0.2
+  defaultDriftingMaxSpeed: 15
+  defaultFrictionDecayRate: 10
+  defaultFrictionRecoveryRate: 4
+  defaultReverseNeutralDelay: 0.4
 --- !u!114 &678846903
 MonoBehaviour:
   m_ObjectHideFlags: 0
