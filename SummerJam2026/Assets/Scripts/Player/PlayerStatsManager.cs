@@ -16,11 +16,29 @@ public class PlayerStatsManager : StatsManager
     private int maxPassengers;
     [SerializeField] int defaultMaxPassengers = 4;
 
+    [Header("Gear Stats")]
+    private float gear1SpeedThreshold;
+    [SerializeField] float defaultGear1SpeedThreshold = 3f;
+    private float gear1Acceleration;
+    [SerializeField] float defaultGear1Acceleration = 15f;
+    private float gear2SpeedThreshold;
+    [SerializeField] float defaultGear2SpeedThreshold = 6f;
+    private float gear2Acceleration;
+    [SerializeField] float defaultGear2Acceleration = 8f;
+    private float gear3Acceleration;
+    [SerializeField] float defaultGear3Acceleration = 4f;
+
+    [Header("Steering Stats")]
+    private float rearAxleOffset;
+    [SerializeField] float defaultRearAxleOffset = 0.5f;
+    private float optimalTurnSpeed;
+    [SerializeField] float defaultOptimalTurnSpeed = 4f;
+
     [Header("Drift Stats")]
     private float minFriction;
-    [SerializeField] float defaultMinFriction = 0.4f;
+    [SerializeField] float defaultMinFriction = 0.2f;
     private float driftSpeedThreshold;
-    [SerializeField] float defaultDriftSpeedThreshold = 0.65f;
+    [SerializeField] float defaultDriftSpeedThreshold = 4f;
     private float driftEntryTime;
     [SerializeField] float defaultDriftEntryTime = 0.2f;
     private float driftingMaxSpeed;
@@ -31,6 +49,10 @@ public class PlayerStatsManager : StatsManager
     [SerializeField] float defaultFrictionRecoveryRate = 4f;
     private float reverseNeutralDelay;
     [SerializeField] float defaultReverseNeutralDelay = 0.4f;
+    private float driftAngularImpulse;
+    [SerializeField] float defaultDriftAngularImpulse = 150f;
+    private float driftTurnMultiplier;
+    [SerializeField] float defaultDriftTurnMultiplier = 1.4f;
 
 
     protected override void Awake()
@@ -47,24 +69,40 @@ public class PlayerStatsManager : StatsManager
     protected override void SetInitialStats()
     {
         base.SetInitialStats();
-        turnSpeed = defaultTurnSpeed;
-        fuelConsumptionRate = defaultFuelConsumptionRate;
+        turnSpeed                        = defaultTurnSpeed;
+        fuelConsumptionRate              = defaultFuelConsumptionRate;
         boostingFuelConsumptionMultiplier = defaultBoostingFuelConsumptionMultiplier;
-        maxFuel = defaultMaxFuel;
-        maxPassengers = defaultMaxPassengers;
-        minFriction = defaultMinFriction;
-        driftSpeedThreshold = defaultDriftSpeedThreshold;
-        driftEntryTime = defaultDriftEntryTime;
-        driftingMaxSpeed = defaultDriftingMaxSpeed;
-        frictionDecayRate = defaultFrictionDecayRate;
-        frictionRecoveryRate = defaultFrictionRecoveryRate;
-        reverseNeutralDelay = defaultReverseNeutralDelay;
+        maxFuel                          = defaultMaxFuel;
+        maxPassengers                    = defaultMaxPassengers;
+        gear1SpeedThreshold              = defaultGear1SpeedThreshold;
+        gear1Acceleration                = defaultGear1Acceleration;
+        gear2SpeedThreshold              = defaultGear2SpeedThreshold;
+        gear2Acceleration                = defaultGear2Acceleration;
+        gear3Acceleration                = defaultGear3Acceleration;
+        rearAxleOffset                   = defaultRearAxleOffset;
+        optimalTurnSpeed                 = defaultOptimalTurnSpeed;
+        minFriction                      = defaultMinFriction;
+        driftSpeedThreshold              = defaultDriftSpeedThreshold;
+        driftEntryTime                   = defaultDriftEntryTime;
+        driftingMaxSpeed                 = defaultDriftingMaxSpeed;
+        frictionDecayRate                = defaultFrictionDecayRate;
+        frictionRecoveryRate             = defaultFrictionRecoveryRate;
+        reverseNeutralDelay              = defaultReverseNeutralDelay;
+        driftAngularImpulse              = defaultDriftAngularImpulse;
+        driftTurnMultiplier              = defaultDriftTurnMultiplier;
     }
 
     public float GetTurnSpeed()                                         => turnSpeed;
     public float GetFuelConsumptionRate()                               => fuelConsumptionRate;
     public float GetMaxFuel()                                           => maxFuel;
     public int   GetMaxPassengers()                                     => maxPassengers;
+    public float GetGear1SpeedThreshold()                               => gear1SpeedThreshold;
+    public float GetGear1Acceleration()                                 => gear1Acceleration;
+    public float GetGear2SpeedThreshold()                               => gear2SpeedThreshold;
+    public float GetGear2Acceleration()                                 => gear2Acceleration;
+    public float GetGear3Acceleration()                                 => gear3Acceleration;
+    public float GetRearAxleOffset()                                    => rearAxleOffset;
+    public float GetOptimalTurnSpeed()                                  => optimalTurnSpeed;
     public float GetMinFriction()                                       => minFriction;
     public float GetDriftSpeedThreshold()                               => driftSpeedThreshold;
     public float GetDriftEntryTime()                                    => driftEntryTime;
@@ -72,12 +110,21 @@ public class PlayerStatsManager : StatsManager
     public float GetFrictionDecayRate()                                 => frictionDecayRate;
     public float GetFrictionRecoveryRate()                              => frictionRecoveryRate;
     public float GetReverseNeutralDelay()                               => reverseNeutralDelay;
+    public float GetDriftAngularImpulse()                               => driftAngularImpulse;
+    public float GetDriftTurnMultiplier()                               => driftTurnMultiplier;
     public float GetBoostingFuelConsumptionMultiplier()                 => boostingFuelConsumptionMultiplier;
 
     public void IncreaseTurnSpeed(float amount)                         => turnSpeed += amount;
     public void IncreaseFuelConsumptionRate(float amount)               => fuelConsumptionRate += amount;
     public void IncreaseBoostingFuelConsumptionMultiplier(float amount) => boostingFuelConsumptionMultiplier += amount;
     public void IncreaseMaxFuel(float amount)                           => maxFuel += amount;
+    public void IncreaseGear1SpeedThreshold(float amount)               => gear1SpeedThreshold += amount;
+    public void IncreaseGear1Acceleration(float amount)                 => gear1Acceleration += amount;
+    public void IncreaseGear2SpeedThreshold(float amount)               => gear2SpeedThreshold += amount;
+    public void IncreaseGear2Acceleration(float amount)                 => gear2Acceleration += amount;
+    public void IncreaseGear3Acceleration(float amount)                 => gear3Acceleration += amount;
+    public void IncreaseRearAxleOffset(float amount)                    => rearAxleOffset += amount;
+    public void IncreaseOptimalTurnSpeed(float amount)                  => optimalTurnSpeed += amount;
     public void IncreaseMinFriction(float amount)                       => minFriction += amount;
     public void IncreaseDriftSpeedThreshold(float amount)               => driftSpeedThreshold += amount;
     public void IncreaseDriftEntryTime(float amount)                    => driftEntryTime += amount;
@@ -85,11 +132,20 @@ public class PlayerStatsManager : StatsManager
     public void IncreaseFrictionDecayRate(float amount)                 => frictionDecayRate += amount;
     public void IncreaseFrictionRecoveryRate(float amount)              => frictionRecoveryRate += amount;
     public void IncreaseReverseNeutralDelay(float amount)               => reverseNeutralDelay += amount;
+    public void IncreaseDriftAngularImpulse(float amount)               => driftAngularImpulse += amount;
+    public void IncreaseDriftTurnMultiplier(float amount)               => driftTurnMultiplier += amount;
 
     public void DecreaseTurnSpeed(float amount)                         => turnSpeed -= amount;
     public void DecreaseFuelConsumptionRate(float amount)               => fuelConsumptionRate -= amount;
     public void DecreaseBoostingFuelConsumptionMultiplier(float amount) => boostingFuelConsumptionMultiplier -= amount;
     public void DecreaseMaxFuel(float amount)                           => maxFuel -= amount;
+    public void DecreaseGear1SpeedThreshold(float amount)               => gear1SpeedThreshold -= amount;
+    public void DecreaseGear1Acceleration(float amount)                 => gear1Acceleration -= amount;
+    public void DecreaseGear2SpeedThreshold(float amount)               => gear2SpeedThreshold -= amount;
+    public void DecreaseGear2Acceleration(float amount)                 => gear2Acceleration -= amount;
+    public void DecreaseGear3Acceleration(float amount)                 => gear3Acceleration -= amount;
+    public void DecreaseRearAxleOffset(float amount)                    => rearAxleOffset -= amount;
+    public void DecreaseOptimalTurnSpeed(float amount)                  => optimalTurnSpeed -= amount;
     public void DecreaseMinFriction(float amount)                       => minFriction -= amount;
     public void DecreaseDriftSpeedThreshold(float amount)               => driftSpeedThreshold -= amount;
     public void DecreaseDriftEntryTime(float amount)                    => driftEntryTime -= amount;
@@ -97,4 +153,6 @@ public class PlayerStatsManager : StatsManager
     public void DecreaseFrictionDecayRate(float amount)                 => frictionDecayRate -= amount;
     public void DecreaseFrictionRecoveryRate(float amount)              => frictionRecoveryRate -= amount;
     public void DecreaseReverseNeutralDelay(float amount)               => reverseNeutralDelay -= amount;
+    public void DecreaseDriftAngularImpulse(float amount)               => driftAngularImpulse -= amount;
+    public void DecreaseDriftTurnMultiplier(float amount)               => driftTurnMultiplier -= amount;
 }

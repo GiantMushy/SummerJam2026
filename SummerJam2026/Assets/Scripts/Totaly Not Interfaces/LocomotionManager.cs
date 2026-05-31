@@ -8,7 +8,6 @@ public class LocomotionManager : MonoBehaviour
     [HideInInspector] public bool canRotate = true;
     [HideInInspector] public bool isSprinting = false;
     [HideInInspector] public float currentSpeed = 0f;
-    protected float currentFriction = 1f;
 
     protected virtual void Awake()
     {
