@@ -6,17 +6,13 @@ public class InputManager : MonoBehaviour
 {
     public PlayerCharacterManager player;
     public static InputManager instance;
-    private Keyboard keyboard;
 
     public float horizontalInput;
     public float verticalInput;
 
-    public bool IsBoosting => keyboard.leftShiftKey.isPressed;
-    private bool pressingUp => keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed;
-    private bool pressingDown => keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed;
-    private bool pressingLeft => keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed;
-    private bool pressingRight => keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed;
+    PlayerControls playerControls;
 
+    [SerializeField] Vector2 movementInput; // assigned by the input system
     private void Awake()
     {
         // set singleton
@@ -33,10 +29,28 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        keyboard = Keyboard.current;
         SceneManager.activeSceneChanged += OnSceneChanged;
     }
 
+
+    private void OnEnable()
+    {
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
+
+            playerControls.Player.Move.performed += i => movementInput = i.ReadValue<Vector2>();
+
+        }
+
+        playerControls.Enable();
+    }
+
+
+    private void OnDestroy()
+    {
+        SceneManager.activeSceneChanged -= OnSceneChanged;
+    }
     void Update()
     {
         HandleMovementInput();
@@ -44,22 +58,8 @@ public class InputManager : MonoBehaviour
 
     private void HandleMovementInput()
     {
-        horizontalInput = 0f;
-        verticalInput = 0f;
-
-        if (pressingUp)     verticalInput += 1f;
-        if (pressingDown)   verticalInput -= 1f;
-        if (pressingRight)  horizontalInput += 1f;
-        if (pressingLeft)   horizontalInput -= 1f;
-
-        // Normalize the input vector to prevent faster diagonal movement
-        Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
-        if (inputVector.magnitude > 1f)
-        {
-            inputVector.Normalize();
-            horizontalInput = inputVector.x;
-            verticalInput = inputVector.y;
-        }
+        verticalInput = Mathf.Round(movementInput.y);
+        horizontalInput = Mathf.Round(movementInput.x);
     }
 
     private void OnSceneChanged(Scene current, Scene next)

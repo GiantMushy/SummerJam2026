@@ -8,7 +8,7 @@ public class CharacterManager : MonoBehaviour
     [HideInInspector] public EquipmentManager equipment;
     [HideInInspector] public InventoryManager inventory;
     [HideInInspector] public AnimatorManager animationManager;
-    [HideInInspector] public SoundEffectManager soundEffects;
+    [HideInInspector] public CharacterSoundEffectManager soundEffects;
     [HideInInspector] public CharacterEffectsManager effects;     
     [HideInInspector] public CombatManager combat;
     [HideInInspector] public StatsManager stats;
@@ -22,7 +22,7 @@ public class CharacterManager : MonoBehaviour
         equipment = GetComponent<EquipmentManager>();
         inventory = GetComponent<InventoryManager>();
         animationManager = GetComponent<AnimatorManager>();
-        soundEffects = GetComponent<SoundEffectManager>();
+        soundEffects = GetComponent<CharacterSoundEffectManager>();
         effects = GetComponent<CharacterEffectsManager>();
         combat = GetComponent<CombatManager>();
         stats = GetComponent<StatsManager>();

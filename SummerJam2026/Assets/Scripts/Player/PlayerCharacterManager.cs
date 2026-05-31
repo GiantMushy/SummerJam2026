@@ -1,39 +1,29 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerLocomotionManager))]
-[RequireComponent(typeof(PlayerEquipmentManager))]
-[RequireComponent(typeof(PlayerInventoryManager))]
-[RequireComponent(typeof(PlayerAnimatorManager))]
-[RequireComponent(typeof(SoundEffectManager))]
-[RequireComponent(typeof(PlayerCharacterEffectsManager))]
-[RequireComponent(typeof(PlayerCombatManager))]
-[RequireComponent(typeof(PlayerStatsManager))]
-[RequireComponent(typeof(PlayerInteractionManager))]
-[RequireComponent(typeof(PlayerUiManager))]
 public class PlayerCharacterManager : CharacterManager
 {
-    private PlayerCharacterEffectsManager characterEffectsManager;
-    private PlayerLocomotionManager locomotionManager;
-    private PlayerInventoryManager inventoryManager;
-    private SoundEffectManager soundEffectsManager;
-    private PlayerEquipmentManager equipmentManager;
-    private PlayerAnimatorManager animatorManager;
-    private PlayerCombatManager combatManager;
-    private PlayerStatsManager statsManager;
-    private PlayerUiManager uiManager;
+    public PlayerEffectsManager playerEffectsManager;
+    public PlayerLocomotionManager playerLocomotionManager;
+    public PlayerInventoryManager playerInventoryManager;
+    public CharacterSoundEffectManager characterSoundEffectsManager;
+    public PlayerEquipmentManager playerEquipmentManager;
+    public PlayerAnimatorManager playerAnimatorManager;
+    public PlayerCombatManager playerCombatManager;
+    public PlayerStatsManager playerStatsManager;
+    public PlayerUiManager uiManager;
 
     protected override void Awake()
     {
         base.Awake();
-        characterEffectsManager =   GetComponent<PlayerCharacterEffectsManager>();
-        locomotionManager =         GetComponent<PlayerLocomotionManager>();
-        inventoryManager =          GetComponent<PlayerInventoryManager>();
-        soundEffectsManager =       GetComponent<SoundEffectManager>();
-        equipmentManager =          GetComponent<PlayerEquipmentManager>();
-        animatorManager =           GetComponent<PlayerAnimatorManager>();
-        statsManager =              GetComponent<PlayerStatsManager>();
-        uiManager =                 GetComponent<PlayerUiManager>();
-        combatManager =             GetComponent<PlayerCombatManager>();
+        characterSoundEffectsManager = GetComponent<CharacterSoundEffectManager>();
+        playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        playerInventoryManager = GetComponent<PlayerInventoryManager>();
+        playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+        playerAnimatorManager =  GetComponent<PlayerAnimatorManager>();
+        playerEffectsManager = GetComponent<PlayerEffectsManager>();
+        playerCombatManager = GetComponent<PlayerCombatManager>();
+        playerStatsManager = GetComponent<PlayerStatsManager>();
+        uiManager = GetComponent<PlayerUiManager>();
     }
 
     protected override void Start()

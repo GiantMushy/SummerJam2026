@@ -5,7 +5,7 @@ public class AiCharacterManager : CharacterManager
     private AiCharacterEffectsManager characterEffectsManager;
     private AiLocomotionManager locomotionManager;
     private AiInventoryManager inventoryManager;
-    private SoundEffectManager soundEffectsManager;
+    private CharacterSoundEffectManager soundEffectsManager;
     private AiEquipmentManager equipmentManager;
     private AiAnimatorManager animatorManager;
     private AiCombatManager combatManager;
@@ -18,7 +18,7 @@ public class AiCharacterManager : CharacterManager
         characterEffectsManager =   GetComponent<AiCharacterEffectsManager>();
         locomotionManager =         GetComponent<AiLocomotionManager>();
         inventoryManager =          GetComponent<AiInventoryManager>();
-        soundEffectsManager =       GetComponent<SoundEffectManager>();
+        soundEffectsManager =       GetComponent<CharacterSoundEffectManager>();
         equipmentManager =          GetComponent<AiEquipmentManager>();
         animatorManager =           GetComponent<AiAnimatorManager>();
         statsManager =              GetComponent<AiStatsManager>();

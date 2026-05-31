@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCharacterEffectsManager : CharacterEffectsManager
+public class PlayerEffectsManager : CharacterEffectsManager
 {
     private PlayerCharacterManager player;
 

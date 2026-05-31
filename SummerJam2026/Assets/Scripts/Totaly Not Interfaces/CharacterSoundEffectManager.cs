@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SoundEffectManager : MonoBehaviour
+public class CharacterSoundEffectManager : MonoBehaviour
 {
     [HideInInspector] public CharacterManager character;
 

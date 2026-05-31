@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerInventoryManager : InventoryManager
 {
     private PlayerCharacterManager player;
-    private PlayerStatsManager statsManager;
     private float fuel;
     private float armour;
     private int bulletAmmo;
@@ -15,7 +14,7 @@ public class PlayerInventoryManager : InventoryManager
     {
         base.Awake();
         player = GetComponent<PlayerCharacterManager>();
-        statsManager = GetComponent<PlayerStatsManager>();
+        player.playerStatsManager = GetComponent<PlayerStatsManager>();
     }
 
     protected override void Start()
@@ -77,8 +76,8 @@ public class PlayerInventoryManager : InventoryManager
     }
 
     public void AddFuel(float amount) {
-        if (fuel + amount > statsManager.GetMaxFuel()) {
-            fuel = statsManager.GetMaxFuel();
+        if (fuel + amount > player.playerStatsManager.GetMaxFuel()) {
+            fuel = player.playerStatsManager.GetMaxFuel();
         } else {
             fuel += amount;
         }
@@ -88,7 +87,7 @@ public class PlayerInventoryManager : InventoryManager
     public void AddGrenadeAmmo(int amount) => grenadeAmmo += amount;
     public void AddLandmineAmmo(int amount) => landmineAmmo += amount;
     public void AddPassenger() {
-        if (numOfPassengers < statsManager.GetMaxPassengers()) {
+        if (numOfPassengers < player.playerStatsManager.GetMaxPassengers()) {
             numOfPassengers++;
         }
     }
