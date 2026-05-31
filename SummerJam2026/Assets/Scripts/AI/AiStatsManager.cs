@@ -9,9 +9,4 @@ public class AiStatsManager : StatsManager
         base.Awake();
         entity = GetComponent<AiCharacterManager>();
     }
-
-    protected override void Start()
-    {
-        base.Start();
-    }
 }

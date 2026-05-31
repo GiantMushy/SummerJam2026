@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class AnimatorManager : MonoBehaviour
 {
-    public CharacterManager character;
-    public Animator animator;
+    [HideInInspector] public CharacterManager character;
+    [HideInInspector] public Animator animator;
 
     protected virtual void Awake()
     {

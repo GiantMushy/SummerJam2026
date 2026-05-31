@@ -5,7 +5,7 @@ public class AiCharacterManager : CharacterManager
     private AiCharacterEffectsManager characterEffectsManager;
     private AiLocomotionManager locomotionManager;
     private AiInventoryManager inventoryManager;
-    private SoundEffectsManager soundEffectsManager;
+    private SoundEffectManager soundEffectsManager;
     private AiEquipmentManager equipmentManager;
     private AiAnimatorManager animatorManager;
     private AiCombatManager combatManager;
@@ -18,7 +18,7 @@ public class AiCharacterManager : CharacterManager
         characterEffectsManager =   GetComponent<AiCharacterEffectsManager>();
         locomotionManager =         GetComponent<AiLocomotionManager>();
         inventoryManager =          GetComponent<AiInventoryManager>();
-        soundEffectsManager =       GetComponent<SoundEffectsManager>();
+        soundEffectsManager =       GetComponent<SoundEffectManager>();
         equipmentManager =          GetComponent<AiEquipmentManager>();
         animatorManager =           GetComponent<AiAnimatorManager>();
         statsManager =              GetComponent<AiStatsManager>();
@@ -29,11 +29,5 @@ public class AiCharacterManager : CharacterManager
     protected override void Start()
     {
         base.Start();
-        InputManager.instance.player = this;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 }

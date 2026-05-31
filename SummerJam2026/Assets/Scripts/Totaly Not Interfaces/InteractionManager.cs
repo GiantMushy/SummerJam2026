@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UiManager : MonoBehaviour
+public class InteractionManager : MonoBehaviour
 {
     [HideInInspector] public CharacterManager character;
 

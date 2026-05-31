@@ -1,11 +1,21 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerLocomotionManager))]
+[RequireComponent(typeof(PlayerEquipmentManager))]
+[RequireComponent(typeof(PlayerInventoryManager))]
+[RequireComponent(typeof(PlayerAnimatorManager))]
+[RequireComponent(typeof(SoundEffectManager))]
+[RequireComponent(typeof(PlayerCharacterEffectsManager))]
+[RequireComponent(typeof(PlayerCombatManager))]
+[RequireComponent(typeof(PlayerStatsManager))]
+[RequireComponent(typeof(PlayerInteractionManager))]
+[RequireComponent(typeof(PlayerUiManager))]
 public class PlayerCharacterManager : CharacterManager
 {
     private PlayerCharacterEffectsManager characterEffectsManager;
     private PlayerLocomotionManager locomotionManager;
     private PlayerInventoryManager inventoryManager;
-    private SoundEffectsManager soundEffectsManager;
+    private SoundEffectManager soundEffectsManager;
     private PlayerEquipmentManager equipmentManager;
     private PlayerAnimatorManager animatorManager;
     private PlayerCombatManager combatManager;
@@ -18,7 +28,7 @@ public class PlayerCharacterManager : CharacterManager
         characterEffectsManager =   GetComponent<PlayerCharacterEffectsManager>();
         locomotionManager =         GetComponent<PlayerLocomotionManager>();
         inventoryManager =          GetComponent<PlayerInventoryManager>();
-        soundEffectsManager =       GetComponent<SoundEffectsManager>();
+        soundEffectsManager =       GetComponent<SoundEffectManager>();
         equipmentManager =          GetComponent<PlayerEquipmentManager>();
         animatorManager =           GetComponent<PlayerAnimatorManager>();
         statsManager =              GetComponent<PlayerStatsManager>();
@@ -30,10 +40,5 @@ public class PlayerCharacterManager : CharacterManager
     {
         base.Start();
         InputManager.instance.player = this;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 }

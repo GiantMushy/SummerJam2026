@@ -2,49 +2,85 @@ using UnityEngine;
 
 public class StatsManager : MonoBehaviour
 {
-    public CharacterManager character;
+    [HideInInspector] public CharacterManager character;
 
     [Header("Movement Stats")]
-    public float maxSpeed;
-    public float acceleration;
-    public float autoDeceleration;
-    public float manualDeceleration;
-    public float sprintMultiplier;
+    private float maxSpeed;
+    [SerializeField] float defaultMaxSpeed = 10f;
+    private float minSpeed;
+    [SerializeField] float defaultMinSpeed = -3f;
+    private float acceleration;
+    [SerializeField] float defaultAcceleration = 5f;
+    private float autoDeceleration;
+    [SerializeField] float defaultAutoDeceleration = 2f;
+    private float manualDeceleration;
+    [SerializeField] float defaultManualDeceleration = 3f;
+    private float sprintSpeedMultiplier;
+    [SerializeField] float defaultSprintSpeedMultiplier = 1.5f;
 
     [Header("Combat Stats")]
-    public float maxHealth = 100f;
-    public float armour;
-    public float damage;
+    private float maxHealth;
+    [SerializeField] float defaultMaxHealth = 100f;
+    private float armour;
+    [SerializeField] float defaultArmour = 0f;
+    private float damage;
+    [SerializeField] float defaultDamage = 10f;
 
     protected virtual void Awake()
     {
         character = GetComponent<CharacterManager>();
     }
 
-    public float GetMaxSpeed()                              => maxSpeed;
-    public float GetAcceleration()                          => acceleration;
-    public float GetAutoDeceleration()                      => autoDeceleration;
-    public float GetManualDeceleration()                    => manualDeceleration;
-    public float GetSprintMultiplier()                      => sprintMultiplier;
-    public float GetMaxHealth()                             => maxHealth;
-    public float GetArmour()                                => armour;
-    public float GetDamage()                                => damage;
+    protected virtual void Start()
+    {
+        SetInitialStats();   
+    }
 
-    public void IncreaseMaxSpeed(float amount)              => maxSpeed += amount;
-    public void IncreaseAcceleration(float amount)          => acceleration += amount;
-    public void IncreaseAutoDeceleration(float amount)      => autoDeceleration += amount;
-    public void IncreaseManualDeceleration(float amount)    => manualDeceleration += amount;
-    public void IncreaseSprintMultiplier(float amount)      => sprintMultiplier += amount;
-    public void IncreaseMaxHealth(float amount)             => maxHealth += amount;
-    public void IncreaseArmour(float amount)                => armour += amount;
-    public void IncreaseDamage(float amount)                => damage += amount;
+    protected virtual void SetInitialStats()
+    {
+        maxSpeed = defaultMaxSpeed;
+        minSpeed = defaultMinSpeed;
+        acceleration = defaultAcceleration;
+        autoDeceleration = defaultAutoDeceleration;
+        manualDeceleration = defaultManualDeceleration;
+        sprintSpeedMultiplier = defaultSprintSpeedMultiplier;
+        maxHealth = defaultMaxHealth;
+        armour = defaultArmour;
+        damage = defaultDamage;
+    }
 
-    public void DecreaseMaxSpeed(float amount)              => maxSpeed -= amount;
-    public void DecreaseAcceleration(float amount)          => acceleration -= amount;
-    public void DecreaseAutoDeceleration(float amount)      => autoDeceleration -= amount;
-    public void DecreaseManualDeceleration(float amount)    => manualDeceleration -= amount;
-    public void DecreaseSprintMultiplier(float amount)      => sprintMultiplier -= amount;
-    public void DecreaseMaxHealth(float amount)             => maxHealth -= amount;
-    public void DecreaseArmour(float amount)                => armour -= amount;
-    public void DecreaseDamage(float amount)                => damage -= amount;
+    protected virtual void ResetStats()
+    {
+        SetInitialStats();
+    }
+
+    public virtual float GetMaxSpeed()                              => maxSpeed;
+    public virtual float GetMinSpeed()                              => minSpeed;
+    public virtual float GetAcceleration()                          => acceleration;
+    public virtual float GetAutoDeceleration()                      => autoDeceleration;
+    public virtual float GetManualDeceleration()                    => manualDeceleration;
+    public virtual float GetSprintSpeedMultiplier()                 => sprintSpeedMultiplier;
+    public virtual float GetMaxHealth()                             => maxHealth;
+    public virtual float GetArmour()                                => armour;
+    public virtual float GetDamage()                                => damage;
+
+    public virtual void IncreaseMaxSpeed(float amount)              => maxSpeed += amount;
+    public virtual void IncreaseMinSpeed(float amount)              => minSpeed += amount;
+    public virtual void IncreaseAcceleration(float amount)          => acceleration += amount;
+    public virtual void IncreaseAutoDeceleration(float amount)      => autoDeceleration += amount;
+    public virtual void IncreaseManualDeceleration(float amount)    => manualDeceleration += amount;
+    public virtual void IncreaseSprintSpeedMultiplier(float amount) => sprintSpeedMultiplier += amount;
+    public virtual void IncreaseMaxHealth(float amount)             => maxHealth += amount;
+    public virtual void IncreaseArmour(float amount)                => armour += amount;
+    public virtual void IncreaseDamage(float amount)                => damage += amount;
+
+    public virtual void DecreaseMaxSpeed(float amount)              => maxSpeed -= amount;
+    public virtual void DecreaseMinSpeed(float amount)              => minSpeed -= amount;
+    public virtual void DecreaseAcceleration(float amount)          => acceleration -= amount;
+    public virtual void DecreaseAutoDeceleration(float amount)      => autoDeceleration -= amount;
+    public virtual void DecreaseManualDeceleration(float amount)    => manualDeceleration -= amount;
+    public virtual void DecreaseSprintSpeedMultiplier(float amount) => sprintSpeedMultiplier -= amount;
+    public virtual void DecreaseMaxHealth(float amount)             => maxHealth -= amount;
+    public virtual void DecreaseArmour(float amount)                => armour -= amount;
+    public virtual void DecreaseDamage(float amount)                => damage -= amount;
 }

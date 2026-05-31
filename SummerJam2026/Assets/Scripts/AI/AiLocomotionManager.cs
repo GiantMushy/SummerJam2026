@@ -4,7 +4,6 @@ using UnityEngine;
 public class AiLocomotionManager : LocomotionManager
 {
     private AiCharacterManager entity;
-    private AiInputManager inputManager;
 
     private float verticalMovement;
     private float horizontalMovement;
@@ -23,16 +22,24 @@ public class AiLocomotionManager : LocomotionManager
     protected override void Update()
     {
         base.Update();
-        HandleMovement();
-        Move();
     }
 
-    protected virtual void HandleMovement()
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+    protected override void HandleDirectionalChange()
     {
         
     }
 
-    protected virtual void Move()
+    protected override void HandleMovement()
+    {
+        
+    }
+
+    protected override void HandleCharacterPhysics()
     {
         
     }

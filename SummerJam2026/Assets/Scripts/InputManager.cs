@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class InputManger : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    private PlayerCharacterManager player;
-    public static InputManger instance;
+    public PlayerCharacterManager player;
+    public static InputManager instance;
+    private Keyboard keyboard;
 
     public float horizontalInput;
     public float verticalInput;
@@ -31,6 +33,7 @@ public class InputManger : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
+        keyboard = Keyboard.current;
         SceneManager.activeSceneChanged += OnSceneChanged;
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CharacterEffectsManager : MonoBehaviour
 {
-    public CharacterManager character;
+    [HideInInspector] public CharacterManager character;
 
     protected virtual void Awake()
     {
