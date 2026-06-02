@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class PlayerCharacterManager : CharacterManager
 {
-    public PlayerEffectsManager playerEffectsManager;
-    public PlayerLocomotionManager playerLocomotionManager;
-    public PlayerInventoryManager playerInventoryManager;
-    public CharacterSoundEffectManager characterSoundEffectsManager;
-    public PlayerEquipmentManager playerEquipmentManager;
-    public PlayerAnimatorManager playerAnimatorManager;
-    public PlayerCombatManager playerCombatManager;
-    public PlayerStatsManager playerStatsManager;
-    public PlayerUiManager uiManager;
+    [HideInInspector] public PlayerEffectsManager playerEffectsManager;
+    [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
+    [HideInInspector] public PlayerInventoryManager playerInventoryManager;
+    [HideInInspector] public CharacterSoundEffectManager characterSoundEffectsManager;
+    [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
+    [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
+    [HideInInspector] public PlayerCombatManager playerCombatManager;
+    [HideInInspector] public PlayerStatsManager playerStatsManager;
+    [HideInInspector] public PlayerUiManager uiManager;
 
     protected override void Awake()
     {

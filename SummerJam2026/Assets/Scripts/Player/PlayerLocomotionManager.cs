@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles player movement and physics, including acceleration, steering, drifting, and grip mechanics.
+/// Very much still in development!
+/// </summary>
 public class PlayerLocomotionManager : LocomotionManager
 {
     private PlayerCharacterManager player;

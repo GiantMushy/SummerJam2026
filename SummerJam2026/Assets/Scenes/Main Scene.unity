@@ -717,7 +717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d99a510a1f8fd4594cb70466069d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundEffectManager
-  character: {fileID: 0}
 --- !u!114 &678846894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,7 +768,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f6b97c23a31ef4eab029c1a173da02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCharacterEffectsManager
-  character: {fileID: 0}
 --- !u!114 &678846898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,7 +863,7 @@ MonoBehaviour:
   defaultMinFriction: 0.2
   defaultDriftSpeedThreshold: 20
   defaultDriftEntryTime: 0.2
-  defaultDriftingMaxSpeed: 15
+  defaultDriftingMaxSpeed: 30
   defaultFrictionDecayRate: 10
   defaultFrictionRecoveryRate: 4
   defaultReverseNeutralDelay: 0.4
@@ -894,6 +892,15 @@ MonoBehaviour:
   stats: {fileID: 0}
   interaction: {fileID: 0}
   ui: {fileID: 0}
+  playerEffectsManager: {fileID: 0}
+  playerLocomotionManager: {fileID: 0}
+  playerInventoryManager: {fileID: 0}
+  characterSoundEffectsManager: {fileID: 0}
+  playerEquipmentManager: {fileID: 0}
+  playerAnimatorManager: {fileID: 0}
+  playerCombatManager: {fileID: 0}
+  playerStatsManager: {fileID: 0}
+  uiManager: {fileID: 0}
 --- !u!1 &1024389310
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,7 +985,7 @@ TilemapRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 15.5, y: 15.5, z: 0}
+  m_ChunkCullingBounds: {x: 31.5, y: 31.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -1958,7 +1965,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024389310}
   m_Enabled: 1
-  m_CellSize: {x: 32, y: 32, z: 1}
+  m_CellSize: {x: 64, y: 64, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -2076,6 +2083,7 @@ MonoBehaviour:
   player: {fileID: 0}
   horizontalInput: 0
   verticalInput: 0
+  movementInput: {x: 0, y: 0}
 --- !u!4 &1524476288
 Transform:
   m_ObjectHideFlags: 0
