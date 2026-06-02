@@ -1,33 +1,51 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterSoundEffectManager))]
+[RequireComponent(typeof(AiCharacterEffectsManager))]
+[RequireComponent(typeof(AiInteractionManager))]
+[RequireComponent(typeof(AiLocomotionManager))]
+[RequireComponent(typeof(AiInventoryManager))]
+[RequireComponent(typeof(AiEquipmentManager))]
+[RequireComponent(typeof(AiAnimatorManager))]
+[RequireComponent(typeof(AiCombatManager))]
+[RequireComponent(typeof(AiStatsManager))]
+[RequireComponent(typeof(AiUiManager))]
 public class AiCharacterManager : CharacterManager
 {
-    private AiCharacterEffectsManager characterEffectsManager;
-    private AiLocomotionManager locomotionManager;
-    private AiInventoryManager inventoryManager;
-    private CharacterSoundEffectManager soundEffectsManager;
-    private AiEquipmentManager equipmentManager;
-    private AiAnimatorManager animatorManager;
-    private AiCombatManager combatManager;
-    private AiStatsManager statsManager;
-    private AiUiManager uiManager;
+    [HideInInspector] public AiCharacterEffectsManager aiCharacterEffectsManager;
+    [HideInInspector] public CharacterSoundEffectManager aiSoundEffectsManager;
+    [HideInInspector] public AiInteractionManager aiInteractionManager;
+    [HideInInspector] public AiLocomotionManager aiLocomotionManager;
+    [HideInInspector] public AiInventoryManager aiInventoryManager;
+    [HideInInspector] public AiEquipmentManager aiEquipmentManager;
+    [HideInInspector] public AiAnimatorManager aiAnimatorManager;
+    [HideInInspector] public AiCombatManager aiCombatManager;
+    [HideInInspector] public AiStatsManager aiStatsManager;
+    [HideInInspector] public AiUiManager aiUiManager;
 
     protected override void Awake()
     {
         base.Awake();
-        characterEffectsManager =   GetComponent<AiCharacterEffectsManager>();
-        locomotionManager =         GetComponent<AiLocomotionManager>();
-        inventoryManager =          GetComponent<AiInventoryManager>();
-        soundEffectsManager =       GetComponent<CharacterSoundEffectManager>();
-        equipmentManager =          GetComponent<AiEquipmentManager>();
-        animatorManager =           GetComponent<AiAnimatorManager>();
-        statsManager =              GetComponent<AiStatsManager>();
-        uiManager =                 GetComponent<AiUiManager>();
-        combatManager =             GetComponent<AiCombatManager>();
+        aiSoundEffectsManager =     GetComponent<CharacterSoundEffectManager>();
+        aiCharacterEffectsManager = GetComponent<AiCharacterEffectsManager>();
+        aiInteractionManager =      GetComponent<AiInteractionManager>();
+        aiLocomotionManager =       GetComponent<AiLocomotionManager>();
+        aiInventoryManager =        GetComponent<AiInventoryManager>();
+        aiEquipmentManager =        GetComponent<AiEquipmentManager>();
+        aiAnimatorManager =         GetComponent<AiAnimatorManager>();
+        aiCombatManager =           GetComponent<AiCombatManager>();
+        aiStatsManager =            GetComponent<AiStatsManager>();
+        aiUiManager =               GetComponent<AiUiManager>();
     }
 
     protected override void Start()
     {
         base.Start();
+    }
+
+    public override void Die()
+    {
+        aiStatsManager.ActivateDyingState();
+        Destroy(gameObject);
     }
 }

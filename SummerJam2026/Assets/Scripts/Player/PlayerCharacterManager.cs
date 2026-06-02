@@ -1,5 +1,14 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerEffectsManager))]
+[RequireComponent(typeof(PlayerLocomotionManager))]
+[RequireComponent(typeof(PlayerInventoryManager))]
+[RequireComponent(typeof(CharacterSoundEffectManager))]
+[RequireComponent(typeof(PlayerEquipmentManager))]
+[RequireComponent(typeof(PlayerAnimatorManager))]
+[RequireComponent(typeof(PlayerCombatManager))]
+[RequireComponent(typeof(PlayerStatsManager))]
+[RequireComponent(typeof(PlayerUiManager))]
 public class PlayerCharacterManager : CharacterManager
 {
     [HideInInspector] public PlayerEffectsManager playerEffectsManager;

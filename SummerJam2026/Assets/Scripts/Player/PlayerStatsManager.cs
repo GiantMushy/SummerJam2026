@@ -5,54 +5,54 @@ public class PlayerStatsManager : StatsManager
     private PlayerCharacterManager player;
 
     [Header("Player Specific Stats")]
+    [SerializeField] float defaultTurnSpeed = 150f;
     private float turnSpeed;
-    [SerializeField] float defaultTurnSpeed = 100f;
-    private float fuelConsumptionRate;
     [SerializeField] float defaultFuelConsumptionRate = 1f;
-    private float boostingFuelConsumptionMultiplier;
+    private float fuelConsumptionRate;
     [SerializeField] float defaultBoostingFuelConsumptionMultiplier = 2f;
-    private float maxFuel;
+    private float boostingFuelConsumptionMultiplier;
     [SerializeField] float defaultMaxFuel = 100f;
-    private int maxPassengers;
+    private float maxFuel;
     [SerializeField] int defaultMaxPassengers = 4;
+    private int maxPassengers;
 
     [Header("Gear Stats")]
-    private float gear1SpeedThreshold;
     [SerializeField] float defaultGear1SpeedThreshold = 3f;
-    private float gear1Acceleration;
+    private float gear1SpeedThreshold;
     [SerializeField] float defaultGear1Acceleration = 15f;
+    private float gear1Acceleration;
+    [SerializeField] float defaultGear2SpeedThreshold = 20f;
     private float gear2SpeedThreshold;
-    [SerializeField] float defaultGear2SpeedThreshold = 6f;
-    private float gear2Acceleration;
     [SerializeField] float defaultGear2Acceleration = 8f;
-    private float gear3Acceleration;
+    private float gear2Acceleration;
     [SerializeField] float defaultGear3Acceleration = 4f;
+    private float gear3Acceleration;
 
     [Header("Steering Stats")]
-    private float rearAxleOffset;
     [SerializeField] float defaultRearAxleOffset = 0.5f;
-    private float optimalTurnSpeed;
+    private float rearAxleOffset;
     [SerializeField] float defaultOptimalTurnSpeed = 4f;
+    private float optimalTurnSpeed;
 
     [Header("Drift Stats")]
-    private float minFriction;
     [SerializeField] float defaultMinFriction = 0.2f;
+    private float minFriction;
+    [SerializeField] float defaultDriftSpeedThreshold = 20f;
     private float driftSpeedThreshold;
-    [SerializeField] float defaultDriftSpeedThreshold = 4f;
-    private float driftEntryTime;
     [SerializeField] float defaultDriftEntryTime = 0.2f;
+    private float driftEntryTime;
+    [SerializeField] float defaultDriftingMaxSpeed = 30f;
     private float driftingMaxSpeed;
-    [SerializeField] float defaultDriftingMaxSpeed = 8f;
+    [SerializeField] float defaultFrictionDecayRate = 10f;
     private float frictionDecayRate;
-    [SerializeField] float defaultFrictionDecayRate = 3f;
-    private float frictionRecoveryRate;
     [SerializeField] float defaultFrictionRecoveryRate = 4f;
-    private float reverseNeutralDelay;
+    private float frictionRecoveryRate;
     [SerializeField] float defaultReverseNeutralDelay = 0.4f;
-    private float driftAngularImpulse;
+    private float reverseNeutralDelay;
     [SerializeField] float defaultDriftAngularImpulse = 150f;
+    private float driftAngularImpulse;
+    [SerializeField] float defaultDriftTurnMultiplier = 1.5f;
     private float driftTurnMultiplier;
-    [SerializeField] float defaultDriftTurnMultiplier = 1.4f;
 
 
     protected override void Awake()

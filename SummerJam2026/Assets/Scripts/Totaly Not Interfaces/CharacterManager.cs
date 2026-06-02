@@ -35,4 +35,11 @@ public class CharacterManager : MonoBehaviour
         
     }
     
+    public virtual void Die()
+    {
+        // Play death animation, sound, effects, etc.
+        // Disable character controls and interactions
+        // Drop loot if necessary
+        // Destroy or deactivate the character object after a delay
+    }
 }

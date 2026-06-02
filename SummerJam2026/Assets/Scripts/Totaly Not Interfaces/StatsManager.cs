@@ -5,26 +5,26 @@ public class StatsManager : MonoBehaviour
     [HideInInspector] public CharacterManager character;
 
     [Header("Movement Stats")]
-    private float maxSpeed;
     [SerializeField] float defaultMaxSpeed = 10f;
-    private float minSpeed;
+    private float maxSpeed;
     [SerializeField] float defaultMinSpeed = -3f;
-    private float acceleration;
+    private float minSpeed;
     [SerializeField] float defaultAcceleration = 5f;
-    private float autoDeceleration;
+    private float acceleration;
     [SerializeField] float defaultAutoDeceleration = 2f;
-    private float manualDeceleration;
+    private float autoDeceleration;
     [SerializeField] float defaultManualDeceleration = 3f;
-    private float sprintSpeedMultiplier;
+    private float manualDeceleration;
     [SerializeField] float defaultSprintSpeedMultiplier = 1.5f;
+    private float sprintSpeedMultiplier;
 
     [Header("Combat Stats")]
-    private float maxHealth;
     [SerializeField] float defaultMaxHealth = 100f;
-    private float armour;
+    private float maxHealth;
     [SerializeField] float defaultArmour = 0f;
-    private float damage;
+    private float armour;
     [SerializeField] float defaultDamage = 10f;
+    private float damage;
 
     protected virtual void Awake()
     {

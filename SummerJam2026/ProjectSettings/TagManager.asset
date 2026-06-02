@@ -5,12 +5,14 @@ TagManager:
   serializedVersion: 3
   tags:
   - Collidable Object
-  - Hostile Unit
   - Cliff
-  - Eclips
   - Item Pickup
   - Road
   - Slow Terrain
+  - Player Trigger Radius
+  - Hostile
+  - Player Trigger Exit Radius
+  - Eclipse
   layers:
   - Default
   - TransparentFX
@@ -18,9 +20,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Hostile
+  - Eclipse
   - 
   - 
   - 
