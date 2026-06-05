@@ -28,16 +28,9 @@ public class PlayerLocomotionManager : LocomotionManager
         base.Start();
     }
 
-    protected override void Update()
-    {
-        base.Update();
-    }
-
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        //HandleFuelConsumption();
-    }
+    // The player is a single instance, so Unity-driven updates are fine here.
+    void Update()      => TickUpdate();
+    void FixedUpdate() => TickFixedUpdate();
 
     protected override void HandleDirectionalChange()
     {

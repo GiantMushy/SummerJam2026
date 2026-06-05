@@ -139,7 +139,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.75
+  m_Radius: 0.6
 --- !u!50 &6599782547501922480
 Rigidbody2D:
   serializedVersion: 5
@@ -152,7 +152,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -223,6 +223,13 @@ MonoBehaviour:
   defaultArmour: 0
   defaultDamage: 10
   currentState: 0
+  windUpDuration: 0.4
+  recoveryDuration: 0.4
+  jumpDistance: 10
+  jumpDuration: 0.4
+  jumpExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 183
 --- !u!114 &4297343298781567376
 MonoBehaviour:
   m_ObjectHideFlags: 0

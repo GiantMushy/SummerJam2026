@@ -43,6 +43,21 @@ public class AiCharacterManager : CharacterManager
         base.Start();
     }
 
+    void OnEnable()  => AiManager.instanceOrCreate.Register(this);
+    void OnDisable() => AiManager.existing?.Unregister(this);
+
+    // Called once per frame by AiManager instead of per-instance Unity messages.
+    public void TickUpdate()
+    {
+        aiLocomotionManager.TickUpdate();
+        aiCombatManager.TickCombat();
+    }
+
+    public void TickFixedUpdate()
+    {
+        aiLocomotionManager.TickFixedUpdate();
+    }
+
     public override void Die()
     {
         aiStatsManager.ActivateDyingState();

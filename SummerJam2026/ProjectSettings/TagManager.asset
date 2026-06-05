@@ -13,6 +13,7 @@ TagManager:
   - Hostile
   - Player Trigger Exit Radius
   - Eclipse
+  - Player Attack Radius
   layers:
   - Default
   - TransparentFX

@@ -20,12 +20,14 @@ public class LocomotionManager : MonoBehaviour
         
     }
 
-    protected virtual void Update()
+    // Driven externally (by Unity messages for the player, by AiManager for AI)
+    // so the base carries no per-instance Update/FixedUpdate overhead.
+    public virtual void TickUpdate()
     {
         HandleDirectionalChange();
     }
 
-    protected virtual void FixedUpdate()
+    public virtual void TickFixedUpdate()
     {
         HandleMovement();
         HandleCharacterPhysics();

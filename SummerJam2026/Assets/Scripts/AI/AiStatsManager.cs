@@ -11,6 +11,15 @@ public class AiStatsManager : StatsManager
     [Header("AI Specific Stats")]
     [SerializeField] private AiState currentState = AiState.Idle;
 
+    [Header("Jump Attack Stats")]
+    [SerializeField] private float windUpDuration   = 0.4f;  // telegraph pause before lunging
+    [SerializeField] private float recoveryDuration = 0.4f;  // pause after landing a missed jump
+    [SerializeField] private float jumpDistance     = 4f;    // world units travelled per lunge
+    [SerializeField] private float jumpDuration      = 0.25f; // seconds airborne (speed = distance / duration)
+    [Tooltip("Layers the body collider ignores while airborne. Set to everything except the Player " +
+             "(keep the Player layer out so the chase-exit radius still registers mid-jump).")]
+    [SerializeField] private LayerMask jumpExcludeLayers;
+
     protected override void Awake()
     {
         base.Awake();
@@ -53,4 +62,10 @@ public class AiStatsManager : StatsManager
     public void DeactivateChaseState() => currentState = AiState.Idle;
 
     public bool IsChasing() => currentState == AiState.Chase || currentState == AiState.Attached;
+
+    public float GetWindUpDuration()      => windUpDuration;
+    public float GetRecoveryDuration()    => recoveryDuration;
+    public float GetJumpDistance()        => jumpDistance;
+    public float GetJumpDuration()        => jumpDuration;
+    public LayerMask GetJumpExcludeLayers() => jumpExcludeLayers;
 }

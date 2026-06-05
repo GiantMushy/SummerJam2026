@@ -32,7 +32,7 @@ public class AiCombatManager : CombatManager
     private void OnDeath()    => isDead     = true;
     private void OnAttached() => isAttached = true;
 
-    void Update()
+    public void TickCombat()
     {
         if (isAttached && !isDead)
         {

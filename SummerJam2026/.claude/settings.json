@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -File .claude\\documenter_baseline.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -File .claude\\documenter.ps1",
+            "asyncRewake": true,
+            "rewakeMessage": "Documenter (Haiku sub-agent) analyzed recent commits and suggests the following addition to CLAUDE.md. Present this suggestion to the user and ask whether they want to: [A] Accept — apply it as-is using Edit/Write tools, [D] Decline — skip it, or [E] Edit — let the user revise it and then you apply the result. The suggested content to append:",
+            "rewakeSummary": "Documenter found a documentation suggestion — check the chat",
+            "timeout": 120,
+            "statusMessage": "Documenter analyzing commits..."
+          }
+        ]
+      }
+    ]
+  }
+}

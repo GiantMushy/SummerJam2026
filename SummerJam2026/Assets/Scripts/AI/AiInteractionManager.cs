@@ -6,6 +6,11 @@ public class AiInteractionManager : InteractionManager
     public event Action TriggerChase;
     public event Action TriggerAttached;
     public event Action TriggerLeaveRange;
+    public event Action TriggerEnterAttackRange;
+    public event Action TriggerExitAttackRange;
+    public event Action TriggerEclipse;
+
+    private bool hasAttached = false;
 
     protected override void Awake()
     {
@@ -19,26 +24,30 @@ public class AiInteractionManager : InteractionManager
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (hasAttached) return;
+
         if (collision.gameObject.CompareTag("Player"))
-            // Replace with TriggerAttach when that actually does something
-            character.Die();
+        {
+            hasAttached = true;
+            TriggerAttached?.Invoke();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player Trigger Radius"))
-        {
             TriggerChase?.Invoke();
-        }
+        else if (other.CompareTag("Player Attack Radius"))
+            TriggerEnterAttackRange?.Invoke();
         else if (other.CompareTag("Eclipse"))
-        {
-            character.Die();
-        }
+            TriggerEclipse?.Invoke();
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player Trigger Exit Radius"))
             TriggerLeaveRange?.Invoke();
+        else if (other.CompareTag("Player Attack Radius"))
+            TriggerExitAttackRange?.Invoke();
     }
 }
