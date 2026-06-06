@@ -32,6 +32,12 @@ public class PlayerLocomotionManager : LocomotionManager
     void Update()      => TickUpdate();
     void FixedUpdate() => TickFixedUpdate();
 
+    public override void TickUpdate()
+    {
+        base.TickUpdate();
+        HandleFuelConsumption();
+    }
+
     protected override void HandleDirectionalChange()
     {
         if (!canMove)
@@ -82,6 +88,13 @@ public class PlayerLocomotionManager : LocomotionManager
         float maxSpd = stats.GetMaxSpeed() * (isSprinting ? stats.GetSprintSpeedMultiplier() : 1f);
         float minSpd = stats.GetMinSpeed();
 
+        // Out of fuel: the engine stalls — no propulsion, only braking and coasting.
+        if (player.playerInventoryManager.GetFuel() <= 0f)
+        {
+            HandleStall(minSpd, maxSpd);
+            return;
+        }
+
         bool pressingForward = verticalMovementInput >  0.1f;
         bool pressingBack    = verticalMovementInput < -0.1f;
         bool movingForward   = currentSpeed >  0.05f;
@@ -121,6 +134,21 @@ public class PlayerLocomotionManager : LocomotionManager
             if (!isDrifting && Mathf.Abs(currentSpeed) > 0.05f)
                 player.rb.AddForce(-(Vector2)transform.up * Mathf.Sign(currentSpeed) * stats.GetAutoDeceleration());
         }
+
+        ClampForwardSpeed(minSpd, maxSpd);
+    }
+
+    private void HandleStall(float minSpd, float maxSpd)
+    {
+        neutralTimer = 0f;
+
+        bool pressingBack  = verticalMovementInput < -0.1f;
+        bool movingForward = currentSpeed > 0.05f;
+
+        if (pressingBack && movingForward && !isDrifting)
+            player.rb.AddForce(-(Vector2)transform.up * stats.GetManualDeceleration()); // brakes still work
+        else if (!isDrifting && Mathf.Abs(currentSpeed) > 0.05f)
+            player.rb.AddForce(-(Vector2)transform.up * Mathf.Sign(currentSpeed) * stats.GetAutoDeceleration()); // coast down
 
         ClampForwardSpeed(minSpd, maxSpd);
     }
@@ -225,7 +253,17 @@ public class PlayerLocomotionManager : LocomotionManager
 
     private void HandleFuelConsumption()
     {
-        if (Mathf.Abs(currentSpeed) <= 0.01f) return;
+        bool pressingForward = verticalMovementInput >  0.1f;
+        bool pressingBack    = verticalMovementInput < -0.1f;
+        bool movingForward   = currentSpeed >  0.05f;
+        bool movingBackward  = currentSpeed < -0.05f;
+
+        // Only burn fuel when throttling in the direction of travel (or launching from a stop).
+        // Braking (input opposes motion) and idling burn nothing.
+        bool braking    = (pressingForward && movingBackward) || (pressingBack && movingForward);
+        bool throttling = (pressingForward || pressingBack) && !braking;
+        if (!throttling) return;
+
         float rate = player.playerStatsManager.GetFuelConsumptionRate();
         if (isSprinting) rate *= player.playerStatsManager.GetBoostingFuelConsumptionMultiplier();
         player.playerInventoryManager.ConsumeFuel(rate * Time.deltaTime);

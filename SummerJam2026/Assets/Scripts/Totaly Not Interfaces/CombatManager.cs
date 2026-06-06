@@ -46,5 +46,13 @@ public class CombatManager : MonoBehaviour, IDamageable
         return health;
     }
 
+    public void Heal(float amount)
+    {
+        if (hasDied) return;
+        EnsureHealthInitialized();
+
+        health = Mathf.Min(GetMaxHealth(), health + amount);
+    }
+
     public float GetMaxHealth() => character.stats.GetMaxHealth();
 }

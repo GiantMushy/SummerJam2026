@@ -80,8 +80,7 @@ public class PlayerUiManager : UiManager
         healthText.text = $"{Mathf.CeilToInt(health)} / {Mathf.CeilToInt(maxHealth)}";
 
         float fuel = player.playerInventoryManager.GetFuel();
-        float maxFuel = player.playerStatsManager.GetMaxFuel();
-        fuelText.text = $"{Mathf.CeilToInt(fuel)} / {Mathf.CeilToInt(maxFuel)}";
+        fuelText.text = $"{fuel:0.0}";
     }
 
     private void BeginRun()

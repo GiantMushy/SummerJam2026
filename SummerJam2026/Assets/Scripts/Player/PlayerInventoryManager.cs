@@ -39,6 +39,7 @@ public class PlayerInventoryManager : InventoryManager
             fuel -= amount;
             return true;
         } else {
+            fuel = 0f; // Not enough left — drain the remainder so the tank reads empty.
             return false;
         }
     }
