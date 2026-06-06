@@ -221,7 +221,7 @@ MonoBehaviour:
   defaultSprintSpeedMultiplier: 1.5
   defaultMaxHealth: 100
   defaultArmour: 0
-  defaultDamage: 10
+  defaultDamage: 5
   currentState: 0
   windUpDuration: 0.4
   recoveryDuration: 0.4

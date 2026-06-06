@@ -8,29 +8,7 @@ using UnityEngine;
 /// </summary>
 public class AiManager : MonoBehaviour
 {
-    private static AiManager instance;
-
-    /// <summary>The current instance without creating one (null if none exists). Use for cleanup.</summary>
-    public static AiManager existing => instance;
-
-    /// <summary>
-    /// Lazily resolves the manager so agents can register regardless of scene setup or
-    /// Awake/OnEnable ordering. Reuses a scene-placed instance if one exists, otherwise
-    /// creates one on demand.
-    /// </summary>
-    public static AiManager instanceOrCreate
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindFirstObjectByType<AiManager>();
-                if (instance == null)
-                    instance = new GameObject(nameof(AiManager)).AddComponent<AiManager>();
-            }
-            return instance;
-        }
-    }
+    public static AiManager instance;
 
     private readonly List<AiCharacterManager> agents = new();
 

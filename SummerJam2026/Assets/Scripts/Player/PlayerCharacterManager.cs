@@ -40,4 +40,11 @@ public class PlayerCharacterManager : CharacterManager
         base.Start();
         InputManager.instance.player = this;
     }
+
+    public override void Die()
+    {
+        base.Die();
+        playerLocomotionManager.canMove = false;
+        uiManager.OnPlayerDeath();
+    }
 }

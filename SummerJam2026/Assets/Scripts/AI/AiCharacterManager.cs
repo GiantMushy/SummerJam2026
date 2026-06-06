@@ -41,10 +41,11 @@ public class AiCharacterManager : CharacterManager
     protected override void Start()
     {
         base.Start();
+        // Registered in Start (not OnEnable) so AiManager.Awake has run and instance is set.
+        AiManager.instance.Register(this);
     }
 
-    void OnEnable()  => AiManager.instanceOrCreate.Register(this);
-    void OnDisable() => AiManager.existing?.Unregister(this);
+    void OnDestroy() => AiManager.instance.Unregister(this);
 
     // Called once per frame by AiManager instead of per-instance Unity messages.
     public void TickUpdate()

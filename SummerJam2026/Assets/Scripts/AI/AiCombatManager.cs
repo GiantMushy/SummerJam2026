@@ -9,6 +9,7 @@ public class AiCombatManager : CombatManager
     private bool isAttached = false;
     private bool isDead = false;
     private float attackTimer = 0f;
+    private IDamageable target;
 
     protected override void Awake()
     {
@@ -30,7 +31,16 @@ public class AiCombatManager : CombatManager
     }
 
     private void OnDeath()    => isDead     = true;
-    private void OnAttached() => isAttached = true;
+
+    private void OnAttached()
+    {
+        isAttached = true;
+        if (isDead) return;
+
+        // First tick lands immediately on attach; interval ticks follow a cooldown later.
+        PerformAttack();
+        attackTimer = 0f;
+    }
 
     public void TickCombat()
     {
@@ -47,7 +57,9 @@ public class AiCombatManager : CombatManager
 
     private void PerformAttack()
     {
-        // Implement attack logic here, e.g., reduce player health
-        Debug.Log($"AI performs an attack for {entity.aiStatsManager.GetDamage()} damage!");
+        if (target == null)
+            target = GameManager.instance?.player?.GetComponent<IDamageable>();
+
+        target?.TakeDamage(entity.aiStatsManager.GetDamage());
     }
 }
