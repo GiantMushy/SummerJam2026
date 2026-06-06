@@ -1,5 +1,7 @@
-# Documenter sub-agent: detects new commits and suggests CLAUDE.md updates via Haiku.
-# Runs as an asyncRewake Stop hook. Exits 2 to trigger a rewake if suggestions are found.
+# Documenter sub-agent: detects commits made since the last evaluated baseline
+# and suggests CLAUDE.md updates via Haiku. Runs as an asyncRewake Stop hook.
+# The baseline only advances here (never on every prompt), so commits made
+# between sessions are detected. Exits 2 to trigger a rewake when a suggestion exists.
 $ErrorActionPreference = 'SilentlyContinue'
 
 $repoRoot = (git rev-parse --show-toplevel 2>$null).Trim().Replace('/', '\')
@@ -13,7 +15,11 @@ $current  = (git -C $repoRoot rev-parse HEAD 2>$null).Trim()
 if (-not $current -or $baseline -eq $current) { exit 0 }
 
 $commitLog = (git -C $repoRoot log --oneline "$baseline..$current" 2>$null) -join "`n"
-if (-not $commitLog) { exit 0 }
+if (-not $commitLog) {
+    # No commits in range (e.g. history was rewound) — resync the baseline and bail.
+    $current | Set-Content $baselineFile -Encoding utf8 -NoNewline
+    exit 0
+}
 
 if (-not (Get-Command claude -ErrorAction SilentlyContinue)) { exit 0 }
 
@@ -42,11 +48,18 @@ If you have a suggestion: respond with ONLY the exact markdown text to APPEND to
 If nothing needs documenting: respond with exactly [NO_UPDATE]
 "@
 
-$suggestion = ($prompt | & claude -p --model claude-haiku-4-5-20251001 2>$null)
-if (-not $suggestion -or $suggestion.Trim() -match '^\[NO_UPDATE\]') { exit 0 }
+$response   = $prompt | & claude -p --model claude-haiku-4-5-20251001 2>$null
+$suggestion = if ($response) { ($response -join "`n").Trim() } else { "" }
 
-# Update baseline now so the rewake's own Stop hook doesn't re-suggest the same commits.
+# If the Haiku call produced no output (transient failure), leave the baseline
+# untouched so the same commits are retried on the next stop.
+if (-not $suggestion) { exit 0 }
+
+# Got a definitive answer — advance the baseline so this range is evaluated only once,
+# whether or not there was something worth documenting.
 $current | Set-Content $baselineFile -Encoding utf8 -NoNewline
 
-Write-Output $suggestion.Trim()
+if ($suggestion -match '^\[NO_UPDATE\]') { exit 0 }
+
+Write-Output $suggestion
 exit 2
