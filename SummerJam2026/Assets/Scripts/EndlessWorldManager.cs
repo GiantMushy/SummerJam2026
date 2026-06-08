@@ -323,6 +323,7 @@ public class EndlessWorldManager : MonoBehaviour
 
         playerRb.position += delta;
         AiManager.instance?.ShiftAll(delta);
+        WorldSpawnManager.instance?.ShiftAll(delta);
         if (cameraManager != null) cameraManager.transform.position += (Vector3)delta;
         if (eclipse != null) eclipse.transform.position += (Vector3)delta;
 
@@ -330,6 +331,70 @@ public class EndlessWorldManager : MonoBehaviour
         // and lands at the same on-screen position as before the shift.
         worldOffsetColumns += shift;
         ResetAndGenerate();
+    }
+
+    // ---- Spawn support (used by WorldSpawnManager) -------------------------
+
+    /// <summary>Absolute, rebase-invariant column index for a world X.</summary>
+    public int WorldXToAbsoluteColumn(float worldX) => Mathf.FloorToInt(worldX) + worldOffsetColumns;
+
+    /// <summary>Current cell-X (grid coordinate, ~world X) for an absolute column.</summary>
+    public int AbsoluteColumnToCellX(int absCol) => absCol - worldOffsetColumns;
+
+    /// <summary>
+    /// Returns a drivable, never-on-a-cliff spawn point in the given column. The vertical
+    /// target is centreRow + offsetFromCenter, clamped into the open corridor and pushed off
+    /// any obstacle blob — so by construction it lands on open ground. A final cliff-tile check
+    /// guards against any drift between the analytic shape and the painted tiles.
+    /// </summary>
+    public bool TryGetSpawnPoint(int absCol, float offsetFromCenter, out Vector2 worldPoint)
+    {
+        worldPoint = default;
+
+        ComputeCorridor(absCol, out int gapBottom, out int gapTop);
+        ComputeObstacle(absCol, gapBottom, gapTop, out int obsBottom, out int obsTop);
+
+        int lo = gapBottom + 1;
+        int hi = gapTop - 1;
+        if (hi < lo) { lo = gapBottom; hi = gapTop; } // degenerate gap fallback
+
+        int targetY = Mathf.Clamp(Mathf.RoundToInt(CenterRow + offsetFromCenter), lo, hi);
+        targetY = PushOffObstacle(targetY, lo, hi, obsBottom, obsTop);
+
+        int cellX = AbsoluteColumnToCellX(absCol);
+        if (cliffMap.GetTile(new Vector3Int(cellX, targetY, 0)) != null
+            && !TryFindClearRow(cellX, lo, hi, out targetY))
+            return false;
+
+        worldPoint = new Vector2(cellX + 0.5f, targetY + 0.5f); // tile centre
+        return true;
+    }
+
+    /// <summary>Moves a row out of an obstacle blob to the nearer open side of the corridor.</summary>
+    private int PushOffObstacle(int y, int lo, int hi, int obsBottom, int obsTop)
+    {
+        if (obsBottom > obsTop) return y;       // no obstacle in this column
+        if (y < obsBottom || y > obsTop) return y; // already clear of it
+
+        int below = obsBottom - 1;
+        int above = obsTop + 1;
+        bool belowOk = below >= lo;
+        bool aboveOk = above <= hi;
+
+        if (belowOk && (!aboveOk || (y - below) <= (above - y))) return below;
+        if (aboveOk) return above;
+        return y; // shouldn't happen given the minPassage guarantee
+    }
+
+    /// <summary>Finds the first row in [lo, hi] whose cliff cell is empty.</summary>
+    private bool TryFindClearRow(int cellX, int lo, int hi, out int y)
+    {
+        for (int yy = lo; yy <= hi; yy++)
+        {
+            if (cliffMap.GetTile(new Vector3Int(cellX, yy, 0)) == null) { y = yy; return true; }
+        }
+        y = lo;
+        return false;
     }
 
     // ---- Hash helpers ------------------------------------------------------

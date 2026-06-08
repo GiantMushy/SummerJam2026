@@ -10,6 +10,9 @@ public class AiManager : MonoBehaviour
 {
     public static AiManager instance;
 
+    [Tooltip("Agents farther than this from the player are destroyed (endless streaming). 0 disables culling.")]
+    [SerializeField] private float aiDespawnDistance = 60f;
+
     private readonly List<AiCharacterManager> agents = new();
 
     void Awake()
@@ -49,8 +52,31 @@ public class AiManager : MonoBehaviour
 
     void Update()
     {
+        CullFar();
         for (int i = 0; i < agents.Count; i++)
             agents[i].TickUpdate();
+    }
+
+    /// <summary>
+    /// Destroys agents the player has left far behind so the endless world doesn't
+    /// accumulate AI forever. Attached/chasing agents stay near the player and survive.
+    /// </summary>
+    private void CullFar()
+    {
+        if (aiDespawnDistance <= 0f || GameManager.instance == null) return;
+        GameObject player = GameManager.instance.player;
+        if (player == null) return;
+
+        Vector2 p = player.transform.position;
+        float sqr = aiDespawnDistance * aiDespawnDistance;
+
+        // Backward so Destroy (which unregisters in OnDestroy) doesn't disturb earlier indices.
+        for (int i = agents.Count - 1; i >= 0; i--)
+        {
+            Vector2 pos = agents[i].transform.position;
+            if ((pos - p).sqrMagnitude > sqr)
+                Destroy(agents[i].gameObject);
+        }
     }
 
     void FixedUpdate()
