@@ -21,10 +21,6 @@ public class PlayerUiManager : UiManager
 
     [SerializeField] private float instructionsFadeDuration = 0.3f;
 
-    // Highest survival time this session. Static so it survives scene reloads (restarts)
-    // but resets when the game is closed. -1 means "no run completed yet" => "N/A".
-    private static float bestTime = -1f;
-
     private GameState state;
     private float elapsedTime;
 
@@ -48,6 +44,7 @@ public class PlayerUiManager : UiManager
         deathDisplayPrefab.blocksRaycasts = false;
 
         timerText.text = FormatTime(0f);
+        bestTimerText.text = FormatBestTime();
     }
 
     private void Update()
@@ -94,10 +91,10 @@ public class PlayerUiManager : UiManager
     {
         state = GameState.Dead;
 
-        if (elapsedTime > bestTime) bestTime = elapsedTime;
+        GameManager.instance.RecordRunTime(elapsedTime);
 
         deathTimerText.text = FormatTime(elapsedTime);
-        bestTimerText.text = bestTime < 0f ? "N/A" : FormatTime(bestTime);
+        bestTimerText.text = FormatBestTime();
 
         deathDisplayPrefab.alpha = 1f;
         deathDisplayPrefab.blocksRaycasts = true;
@@ -106,6 +103,11 @@ public class PlayerUiManager : UiManager
     private void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private string FormatBestTime()
+    {
+        return GameManager.instance.HasBestTime ? FormatTime(GameManager.instance.GetBestTime()) : "N/A";
     }
 
     private string FormatTime(float seconds)
