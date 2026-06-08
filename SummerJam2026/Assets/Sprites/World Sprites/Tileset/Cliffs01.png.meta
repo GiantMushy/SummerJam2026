@@ -104,7 +104,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
+        y: 112
         width: 16
         height: 16
       alignment: 0
@@ -125,8 +125,8 @@ TextureImporter:
       name: Cliffs01_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 128
+        x: 16
+        y: 112
         width: 16
         height: 16
       alignment: 0
@@ -147,7 +147,7 @@ TextureImporter:
       name: Cliffs01_2
       rect:
         serializedVersion: 2
-        x: 0
+        x: 32
         y: 112
         width: 16
         height: 16
@@ -191,8 +191,8 @@ TextureImporter:
       name: Cliffs01_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 96
+        x: 64
+        y: 112
         width: 16
         height: 16
       alignment: 0
@@ -213,8 +213,8 @@ TextureImporter:
       name: Cliffs01_5
       rect:
         serializedVersion: 2
-        x: 48
-        y: 96
+        x: 80
+        y: 112
         width: 16
         height: 16
       alignment: 0
@@ -236,7 +236,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 80
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -257,8 +257,8 @@ TextureImporter:
       name: Cliffs01_7
       rect:
         serializedVersion: 2
-        x: 48
-        y: 80
+        x: 64
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -279,8 +279,8 @@ TextureImporter:
       name: Cliffs01_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
+        x: 80
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -301,8 +301,8 @@ TextureImporter:
       name: Cliffs01_9
       rect:
         serializedVersion: 2
-        x: 48
-        y: 64
+        x: 0
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -323,8 +323,8 @@ TextureImporter:
       name: Cliffs01_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
+        x: 64
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -345,8 +345,8 @@ TextureImporter:
       name: Cliffs01_11
       rect:
         serializedVersion: 2
-        x: 16
-        y: 48
+        x: 80
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -367,8 +367,8 @@ TextureImporter:
       name: Cliffs01_12
       rect:
         serializedVersion: 2
-        x: 32
-        y: 48
+        x: 0
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -389,8 +389,8 @@ TextureImporter:
       name: Cliffs01_13
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
+        x: 64
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -411,8 +411,8 @@ TextureImporter:
       name: Cliffs01_14
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 80
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -433,8 +433,8 @@ TextureImporter:
       name: Cliffs01_15
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
+        x: 0
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -455,8 +455,8 @@ TextureImporter:
       name: Cliffs01_16
       rect:
         serializedVersion: 2
-        x: 32
-        y: 32
+        x: 64
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -477,8 +477,8 @@ TextureImporter:
       name: Cliffs01_17
       rect:
         serializedVersion: 2
-        x: 48
-        y: 32
+        x: 80
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -500,7 +500,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -522,7 +522,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -544,7 +544,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -566,7 +566,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 16
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -587,8 +587,8 @@ TextureImporter:
       name: Cliffs01_22
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 64
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -609,8 +609,8 @@ TextureImporter:
       name: Cliffs01_23
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 80
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -631,8 +631,8 @@ TextureImporter:
       name: Cliffs01_24
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
+        x: 16
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -653,8 +653,8 @@ TextureImporter:
       name: Cliffs01_25
       rect:
         serializedVersion: 2
-        x: 48
-        y: 0
+        x: 32
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -667,6 +667,94 @@ TextureImporter:
       bones: []
       spriteID: 05d098db1f70dbc4b9f1587281d5a45b
       internalID: 175929062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cliffs01_26
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 671c5aeb3d25640408e25a4783382c34
+      internalID: 13848077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cliffs01_27
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a1a894eba9be63458c588c15340d768
+      internalID: -404426419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cliffs01_28
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 853881954edf6314b98fc1318d37a9cd
+      internalID: -734802861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cliffs01_29
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f882135334630294e9e9110c0a5a6e83
+      internalID: -1610477530
       vertices: []
       indices: 
       edges: []
@@ -706,6 +794,10 @@ TextureImporter:
       Cliffs01_23: -1755310645
       Cliffs01_24: -701387923
       Cliffs01_25: 175929062
+      Cliffs01_26: 13848077
+      Cliffs01_27: -404426419
+      Cliffs01_28: -734802861
+      Cliffs01_29: -1610477530
       Cliffs01_3: -193520766
       Cliffs01_4: 187398807
       Cliffs01_5: 170613944
