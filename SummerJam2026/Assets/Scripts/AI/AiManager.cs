@@ -33,6 +33,20 @@ public class AiManager : MonoBehaviour
         agents.RemoveAt(last);
     }
 
+    /// <summary>
+    /// Translates every registered agent by <paramref name="delta"/>. Used by the
+    /// floating-origin rebase so AI stay aligned with the world when it shifts toward origin.
+    /// </summary>
+    public void ShiftAll(Vector2 delta)
+    {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            Rigidbody2D rb = agents[i].rb;
+            if (rb != null) rb.position += delta;
+            else agents[i].transform.position += (Vector3)delta;
+        }
+    }
+
     void Update()
     {
         for (int i = 0; i < agents.Count; i++)
