@@ -872,6 +872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimatorManager
   character: {fileID: 0}
+  animatorGameObject: {fileID: 0}
   animator: {fileID: 0}
 --- !u!114 &7906238631516111466
 MonoBehaviour:

@@ -41,10 +41,20 @@ public class PlayerCharacterManager : CharacterManager
         InputManager.instance.player = this;
     }
 
+
+    protected override void Update()
+    {
+        base.Update();
+        animationManager.animatorGameObject.transform.rotation = Quaternion.identity;
+        animationManager.UpdateAnimatorLocomotionParameters();
+    }
+
+
     public override void Die()
     {
         base.Die();
         playerLocomotionManager.canMove = false;
         uiManager.OnPlayerDeath();
     }
+
 }

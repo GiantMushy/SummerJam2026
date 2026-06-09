@@ -8,6 +8,7 @@ public class PlayerAnimatorManager : AnimatorManager
     {
         base.Awake();
         player = GetComponent<PlayerCharacterManager>();
+        animatorGameObject = animator.gameObject;
     }
 
     protected override void Start()

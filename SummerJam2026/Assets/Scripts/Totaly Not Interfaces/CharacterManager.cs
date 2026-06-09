@@ -35,6 +35,12 @@ public class CharacterManager : MonoBehaviour
         
     }
     
+
+    protected virtual void Update()
+    {
+    }
+
+
     public virtual void Die()
     {
         // Play death animation, sound, effects, etc.
