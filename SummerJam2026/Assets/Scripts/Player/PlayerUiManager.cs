@@ -3,21 +3,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerUiManager : UiManager
 {
     private enum GameState { WaitingToStart, Running, Dead }
 
     private PlayerCharacterManager player;
-    [SerializeField] private GameObject healthBarPrefab; // not implemented yet
-    [SerializeField] private GameObject fuelBarPrefab; // not implemented yet
     [SerializeField] private CanvasGroup movementInstructionsPrefab;
     [SerializeField] private CanvasGroup deathDisplayPrefab;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI bestTimerText;
     [SerializeField] private TextMeshProUGUI deathTimerText;
-    [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] private TextMeshProUGUI fuelText;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private Image fuelBar;
 
     [SerializeField] private float instructionsFadeDuration = 0.3f;
 
@@ -49,7 +48,7 @@ public class PlayerUiManager : UiManager
 
     private void Update()
     {
-        UpdateStatusTexts();
+        UpdateStatusBars();
 
         switch (state)
         {
@@ -70,14 +69,15 @@ public class PlayerUiManager : UiManager
         }
     }
 
-    private void UpdateStatusTexts()
+    private void UpdateStatusBars()
     {
         float health = player.playerCombatManager.GetHealth();
         float maxHealth = player.playerCombatManager.GetMaxHealth();
-        healthText.text = $"{Mathf.CeilToInt(health)} / {Mathf.CeilToInt(maxHealth)}";
+        healthBar.fillAmount = health / maxHealth;
 
         float fuel = player.playerInventoryManager.GetFuel();
-        fuelText.text = $"{fuel:0.0}";
+        float maxFuel = player.playerStatsManager.GetMaxFuel();
+        fuelBar.fillAmount = fuel / maxFuel;
     }
 
     private void BeginRun()
