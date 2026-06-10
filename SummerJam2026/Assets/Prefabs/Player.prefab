@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19761601912196229}
-  - component: {fileID: 5201281121122194262}
-  - component: {fileID: 7836937217818199037}
+  - component: {fileID: 8147872802849929336}
+  - component: {fileID: 2281624250476523360}
   m_Layer: 5
   m_Name: Stat Display
   m_TagString: Untagged
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchoredPosition: {x: 250, y: 63}
   m_SizeDelta: {x: 893.75, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5201281121122194262
+--- !u!222 &8147872802849929336
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +47,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377655529864312464}
   m_CullTransparentMesh: 1
---- !u!114 &7836937217818199037
+--- !u!114 &2281624250476523360
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,8 +298,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4509912806694146558}
-  - component: {fileID: 1065284179618754941}
-  - component: {fileID: 5196720873118698636}
+  - component: {fileID: 4112552202468059986}
+  - component: {fileID: 903892389431497032}
   m_Layer: 5
   m_Name: Health_Fill
   m_TagString: Untagged
@@ -326,7 +326,7 @@ RectTransform:
   m_AnchoredPosition: {x: 47.47, y: -50.19}
   m_SizeDelta: {x: -138.57, y: 56.76}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1065284179618754941
+--- !u!222 &4112552202468059986
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -334,7 +334,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2163518330982971283}
   m_CullTransparentMesh: 1
---- !u!114 &5196720873118698636
+--- !u!114 &903892389431497032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -801,8 +801,8 @@ MonoBehaviour:
   timerText: {fileID: 2637665101268161728}
   bestTimerText: {fileID: 708624222440820415}
   deathTimerText: {fileID: 8743518191575417589}
-  healthBar: {fileID: 5196720873118698636}
-  fuelBar: {fileID: 2855920707962946004}
+  healthBar: {fileID: 903892389431497032}
+  fuelBar: {fileID: 3077819593664969874}
   instructionsFadeDuration: 0.3
 --- !u!114 &8912137245934697087
 MonoBehaviour:
@@ -1999,8 +1999,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5578829076179332287}
-  - component: {fileID: 912190102115403745}
-  - component: {fileID: 2855920707962946004}
+  - component: {fileID: 9170351833762355110}
+  - component: {fileID: 3077819593664969874}
   m_Layer: 5
   m_Name: Fuel_Fill
   m_TagString: Untagged
@@ -2027,7 +2027,7 @@ RectTransform:
   m_AnchoredPosition: {x: 46.339996, y: 32.35}
   m_SizeDelta: {x: -165.88, y: 28.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &912190102115403745
+--- !u!222 &9170351833762355110
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2035,7 +2035,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6925656166464885117}
   m_CullTransparentMesh: 1
---- !u!114 &2855920707962946004
+--- !u!114 &3077819593664969874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
