@@ -18817,13 +18817,13 @@ MonoBehaviour:
   northExtra: 4
   southExtra: 4
   blockWidth: 2
-  baseGapWidth: 30
-  minGap: 5
+  baseGapWidth: 40
+  minGap: 10
   gapNoiseFreq: 0.05
   gapNoiseAmp: 75
-  obstacleChance: 0.302
+  obstacleChance: 1
   minObstacleHeight: 5
-  maxObstacleHeight: 6
+  maxObstacleHeight: 12
   minPassage: 4
   centerCheckpointInterval: 60
   checkpointWindow: 8
@@ -18832,7 +18832,7 @@ MonoBehaviour:
   generateRadiusWest: 60
   generateRadiusEast: 32
   clearBuffer: 12
-  difficultyDistance: 3000
+  difficultyDistance: 100
   rebaseThreshold: 2000
   cameraManager: {fileID: 519420033}
   eclipse: {fileID: 886739263}

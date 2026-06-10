@@ -33,7 +33,11 @@ public class AiAnimatorManager : AnimatorManager
     public void StopChase(){ animator.SetBool(ChaseHash,false);}
     public void JumpMissed(){ animator.SetTrigger(MissedHash);}
     public void Die(){ animator.SetTrigger(DeathHash); }
-    public void PlayJump()   { animator.SetTrigger(JumpHash); }
+    public void PlayJump()
+    {
+        foreach (AnimatorControllerParameter p in animator.parameters)
+            if (p.nameHash == JumpHash) { animator.SetTrigger(JumpHash); return; }
+    }
     public void PlayLand()   { animator.SetTrigger(LandHash); }
     public void Flip(bool flip){
         if(sprite == null) return;
