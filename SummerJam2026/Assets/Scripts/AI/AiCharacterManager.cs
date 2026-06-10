@@ -62,6 +62,8 @@ public class AiCharacterManager : CharacterManager
     public override void Die()
     {
         aiStatsManager.ActivateDyingState();
-        Destroy(gameObject);
+        aiAnimatorManager.Die();
     }
+
+    public void Remove() { Destroy(this.gameObject); }
 }

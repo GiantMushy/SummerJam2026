@@ -79,12 +79,14 @@ public class AiLocomotionManager : LocomotionManager
     private void EnterChasing()
     {
         state = MoveState.Chasing;
+        entity.aiAnimatorManager.StartChase();
         currentSpeed = entity.aiStatsManager.GetMaxSpeed();
     }
 
     private void GoIdle()
     {
         state = MoveState.Idle;
+        entity.aiAnimatorManager.StopChase();
         currentSpeed = 0f;
         entity.rb.linearVelocity = Vector2.zero;
     }
@@ -101,7 +103,6 @@ public class AiLocomotionManager : LocomotionManager
     {
         // Launch-time aim: re-capture the direction so the lunge tracks the player's latest position.
         lockedJumpDir = ((Vector2)(playerTransform.position - transform.position)).normalized;
-        RotateTowards(lockedJumpDir);
         if (bodyCollider != null)
             bodyCollider.excludeLayers = entity.aiStatsManager.GetJumpExcludeLayers();
         state = MoveState.Jumping;
@@ -115,7 +116,7 @@ public class AiLocomotionManager : LocomotionManager
         entity.rb.linearVelocity = Vector2.zero;
         state = MoveState.Recovery;
         timer = 0f;
-        entity.aiAnimatorManager.PlayLand();
+        entity.aiAnimatorManager.JumpMissed();
     }
 
     private void DecideAfterRecovery()
@@ -167,12 +168,20 @@ public class AiLocomotionManager : LocomotionManager
         switch (state)
         {
             case MoveState.Chasing:
-                RotateTowards(directionToPlayer);
                 entity.rb.linearVelocity = directionToPlayer * currentSpeed;
+                if(Mathf.Sign(directionToPlayer.x) == -1)
+                {
+                    Debug.Log("flip False");
+                    entity.aiAnimatorManager.Flip(false);
+                }
+                else
+                {
+                    Debug.Log("flip True");
+                    entity.aiAnimatorManager.Flip(true);
+                }
                 break;
 
             case MoveState.WindUp:
-                RotateTowards(directionToPlayer);  // keep facing the player while telegraphing
                 entity.rb.linearVelocity = Vector2.zero;
                 break;
 
@@ -238,14 +247,6 @@ public class AiLocomotionManager : LocomotionManager
         state = MoveState.Dying;
         entity.aiAnimatorManager.PlayLand();
         entity.Die();
-    }
-
-    // ── Helpers ──────────────────────────────────────────────────────────────────
-
-    private void RotateTowards(Vector2 dir)
-    {
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
-        entity.rb.MoveRotation(angle);
     }
 
     // The "hitbox" is the solid (non-trigger) collider; detection radii are triggers on the player.
