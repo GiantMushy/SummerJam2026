@@ -45,7 +45,6 @@ public class PlayerCharacterManager : CharacterManager
     protected override void Update()
     {
         base.Update();
-        animationManager.animatorGameObject.transform.rotation = Quaternion.identity;
         animationManager.UpdateAnimatorLocomotionParameters();
     }
 

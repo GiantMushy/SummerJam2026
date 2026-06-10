@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Handles player movement and physics, including acceleration, steering, drifting, and grip mechanics.
-/// Very much still in development!
-/// </summary>
 public class PlayerLocomotionManager : LocomotionManager
 {
     private PlayerCharacterManager player;
@@ -11,16 +7,10 @@ public class PlayerLocomotionManager : LocomotionManager
     private float verticalMovementInput;
     private float horizontalMovementInput;
 
-    private bool  isDrifting       = false;
-    private bool  isRecoveringGrip = false;
-    private float neutralTimer     = 0f;
-    private bool  isInNeutral      = false;
-    private float currentGrip      = 1f;
-
     protected override void Awake()
     {
         base.Awake();
-        player  = GetComponent<PlayerCharacterManager>();
+        player = GetComponent<PlayerCharacterManager>();
     }
 
     protected override void Start()
@@ -28,7 +18,6 @@ public class PlayerLocomotionManager : LocomotionManager
         base.Start();
     }
 
-    // The player is a single instance, so Unity-driven updates are fine here.
     void Update()      => TickUpdate();
     void FixedUpdate() => TickFixedUpdate();
 
@@ -49,46 +38,48 @@ public class PlayerLocomotionManager : LocomotionManager
         else if (!canRotate)
         {
             horizontalMovementInput = 0f;
-            //isSprinting             = inputManager.IsBoosting;
         }
         else
         {
             verticalMovementInput   = InputManager.instance.verticalInput;
             horizontalMovementInput = InputManager.instance.horizontalInput;
-            //isSprinting             = inputManager.IsBoosting;
         }
     }
 
     protected override void HandleMovement()
     {
-        if (!canMove)
-        {
-            isDrifting       = false;
-            isRecoveringGrip = false;
-            currentGrip      = 1f;
-            neutralTimer     = 0f;
-            isInNeutral      = false;
-            return;
-        }
+        if (!canMove) return;
 
         currentSpeed = Vector2.Dot(player.rb.linearVelocity, transform.up);
 
-        HandleDriftState();
-        HandleAcceleration();
         HandleSteering();
+        HandleAcceleration();
         HandleGrip();
     }
 
     protected override void HandleCharacterPhysics() { }
 
-    // ── Acceleration / Gears ─────────────────────────────────────────────────
+    // ── Steering ─────────────────────────────────────────────────────────────
+
+    private void HandleSteering()
+    {
+        if (Mathf.Abs(horizontalMovementInput) < 0.01f) return;
+
+        float speedFactor = Mathf.Clamp01(Mathf.Abs(currentSpeed) / player.playerStatsManager.GetOptimalTurnSpeed());
+        float turnRate    = player.playerStatsManager.GetTurnSpeed() * Mathf.SmoothStep(0f, 1f, speedFactor);
+        float turnDelta   = -horizontalMovementInput * turnRate * Time.fixedDeltaTime;
+        if (currentSpeed < 0f) turnDelta = -turnDelta;
+
+        player.rb.MoveRotation(player.rb.rotation + turnDelta);
+    }
+
+    // ── Acceleration ─────────────────────────────────────────────────────────
 
     private void HandleAcceleration()
     {
         float maxSpd = stats.GetMaxSpeed() * (isSprinting ? stats.GetSprintSpeedMultiplier() : 1f);
         float minSpd = stats.GetMinSpeed();
 
-        // Out of fuel: the engine stalls — no propulsion, only braking and coasting.
         if (player.playerInventoryManager.GetFuel() <= 0f)
         {
             HandleStall(minSpd, maxSpd);
@@ -101,37 +92,19 @@ public class PlayerLocomotionManager : LocomotionManager
 
         if (pressingForward)
         {
-            if (currentSpeed >= -0.05f) // Stopped or already going forward
-            {
-                neutralTimer = 0f;
-                if (currentSpeed < maxSpd)
-                    player.rb.AddForce((Vector2)transform.up * GetGearAcceleration());
-            }
-            else // Going backward — wait out neutral delay before going forward
-            {
-                neutralTimer += Time.fixedDeltaTime;
-                if (neutralTimer >= player.playerStatsManager.GetReverseNeutralDelay() && currentSpeed < maxSpd)
-                    player.rb.AddForce((Vector2)transform.up * GetGearAcceleration());
-            }
+            if (currentSpeed < maxSpd)
+                player.rb.AddForce((Vector2)transform.up * GetGearAcceleration());
         }
         else if (pressingBack)
         {
-            if (movingForward && !isDrifting)
-            {
-                neutralTimer = 0f;
+            if (movingForward)
                 player.rb.AddForce(-(Vector2)transform.up * stats.GetManualDeceleration());
-            }
-            else if (!movingForward) // Stopped or reversing — wait out neutral delay before reversing
-            {
-                neutralTimer += Time.fixedDeltaTime;
-                if (neutralTimer >= player.playerStatsManager.GetReverseNeutralDelay() && currentSpeed > minSpd)
-                    player.rb.AddForce((Vector2)transform.up * verticalMovementInput * GetGearAcceleration() * 0.5f);
-            }
+            else if (currentSpeed > minSpd)
+                player.rb.AddForce((Vector2)transform.up * verticalMovementInput * GetGearAcceleration() * 0.5f);
         }
-        else // No input — coast to a stop
+        else
         {
-            neutralTimer = 0f;
-            if (!isDrifting && Mathf.Abs(currentSpeed) > 0.05f)
+            if (Mathf.Abs(currentSpeed) > 0.05f)
                 player.rb.AddForce(-(Vector2)transform.up * Mathf.Sign(currentSpeed) * stats.GetAutoDeceleration());
         }
 
@@ -140,15 +113,13 @@ public class PlayerLocomotionManager : LocomotionManager
 
     private void HandleStall(float minSpd, float maxSpd)
     {
-        neutralTimer = 0f;
-
         bool pressingBack  = verticalMovementInput < -0.1f;
         bool movingForward = currentSpeed > 0.05f;
 
-        if (pressingBack && movingForward && !isDrifting)
-            player.rb.AddForce(-(Vector2)transform.up * stats.GetManualDeceleration()); // brakes still work
-        else if (!isDrifting && Mathf.Abs(currentSpeed) > 0.05f)
-            player.rb.AddForce(-(Vector2)transform.up * Mathf.Sign(currentSpeed) * stats.GetAutoDeceleration()); // coast down
+        if (pressingBack && movingForward)
+            player.rb.AddForce(-(Vector2)transform.up * stats.GetManualDeceleration());
+        else if (Mathf.Abs(currentSpeed) > 0.05f)
+            player.rb.AddForce(-(Vector2)transform.up * Mathf.Sign(currentSpeed) * stats.GetAutoDeceleration());
 
         ClampForwardSpeed(minSpd, maxSpd);
     }
@@ -168,88 +139,16 @@ public class PlayerLocomotionManager : LocomotionManager
         else if (fwdSpd < minSpd) player.rb.linearVelocity -= (Vector2)transform.up * (fwdSpd - minSpd);
     }
 
-    // ── Steering ─────────────────────────────────────────────────────────────
-
-    private void HandleSteering()
-    {
-        if (Mathf.Abs(horizontalMovementInput) < 0.01f) return;
-
-        float speedFactor = Mathf.Clamp01(Mathf.Abs(currentSpeed) / player.playerStatsManager.GetOptimalTurnSpeed());
-        float turnRate    = player.playerStatsManager.GetTurnSpeed() * Mathf.SmoothStep(0f, 1f, speedFactor);
-        if (isDrifting) turnRate *= player.playerStatsManager.GetDriftTurnMultiplier();
-
-        // Negative makes D (horizontal +1) rotate clockwise = turn right for an upward-facing sprite
-        // If turning feels reversed, flip the sign here
-        float turnDelta = -horizontalMovementInput * turnRate * Time.fixedDeltaTime;
-        if (currentSpeed < 0f) turnDelta = -turnDelta; // Invert when reversing
-
-        player.rb.MoveRotation(player.rb.rotation + turnDelta);
-    }
-
-    // ── Grip / Lateral Velocity Cancellation ─────────────────────────────────
+    // ── Grip ─────────────────────────────────────────────────────────────────
 
     private void HandleGrip()
     {
+        // Cancel all lateral velocity so the car always moves in its snapped facing direction.
         Vector2 lateralVel = Vector2.Dot(player.rb.linearVelocity, transform.right) * (Vector2)transform.right;
-        player.rb.linearVelocity -= lateralVel * currentGrip;
+        player.rb.linearVelocity -= lateralVel;
     }
 
-    // ── Drift State Machine ───────────────────────────────────────────────────
-
-    private void HandleDriftState()
-    {
-        bool pressingBack   = verticalMovementInput < -0.1f;
-        bool isTurning      = Mathf.Abs(horizontalMovementInput) > 0.1f;
-        bool aboveThreshold = currentSpeed > player.playerStatsManager.GetDriftSpeedThreshold();
-
-        if (!isDrifting && !isRecoveringGrip)
-        {
-            if (pressingBack && isTurning && aboveThreshold)
-                EnterDrift();
-        }
-        else if (isDrifting)
-        {
-            if (!pressingBack || currentSpeed < 0.5f)
-            {
-                ExitDrift();
-            }
-            else
-            {
-                currentGrip = player.playerStatsManager.GetMinFriction();
-
-                // Bleed speed passively during drift so it doesn't feel floaty
-                player.rb.AddForce(-(Vector2)transform.up * stats.GetAutoDeceleration() * 0.3f);
-
-                float fwdSpd = Vector2.Dot(player.rb.linearVelocity, transform.up);
-                if (fwdSpd > player.playerStatsManager.GetDriftingMaxSpeed())
-                    player.rb.linearVelocity -= (Vector2)transform.up * (fwdSpd - player.playerStatsManager.GetDriftingMaxSpeed());
-            }
-        }
-        else if (isRecoveringGrip)
-        {
-            currentGrip += player.playerStatsManager.GetFrictionRecoveryRate() * Time.fixedDeltaTime;
-            if (currentGrip >= 0.99f)
-            {
-                currentGrip      = 1f;
-                isRecoveringGrip = false;
-            }
-        }
-    }
-
-    private void EnterDrift()
-    {
-        isDrifting  = true;
-        currentGrip = player.playerStatsManager.GetMinFriction();
-        // Negative sign: D (horizontal +1) → clockwise angular kick → rear swings left, nose swings right
-        // If kick feels reversed, flip the sign here
-        player.rb.angularVelocity += -player.playerStatsManager.GetDriftAngularImpulse() * horizontalMovementInput;
-    }
-
-    private void ExitDrift()
-    {
-        isDrifting       = false;
-        isRecoveringGrip = true;
-    }
+    // ── Fuel ─────────────────────────────────────────────────────────────────
 
     private void HandleFuelConsumption()
     {
@@ -258,8 +157,6 @@ public class PlayerLocomotionManager : LocomotionManager
         bool movingForward   = currentSpeed >  0.05f;
         bool movingBackward  = currentSpeed < -0.05f;
 
-        // Only burn fuel when throttling in the direction of travel (or launching from a stop).
-        // Braking (input opposes motion) and idling burn nothing.
         bool braking    = (pressingForward && movingBackward) || (pressingBack && movingForward);
         bool throttling = (pressingForward || pressingBack) && !braking;
         if (!throttling) return;
