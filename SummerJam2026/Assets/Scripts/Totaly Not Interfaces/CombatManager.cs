@@ -27,7 +27,7 @@ public class CombatManager : MonoBehaviour, IDamageable
     }
 
     /// <summary>Clears the death latch so a pooled instance re-pulls full health on next access.</summary>
-    public void ResetForSpawn()
+    public virtual void ResetForSpawn()
     {
         hasDied = false;
         healthInitialized = false;

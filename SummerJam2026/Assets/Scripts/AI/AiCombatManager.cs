@@ -17,17 +17,29 @@ public class AiCombatManager : CombatManager
         entity = GetComponent<AiCharacterManager>();
     }
 
-    protected override void Start()
+    // Subscribe on enable / unsubscribe on disable so pooled instances re-wire cleanly on reuse.
+    private void OnEnable()
     {
-        base.Start();
         entity.aiStatsManager.TriggerDeath         += OnDeath;
         entity.aiInteractionManager.TriggerAttached += OnAttached;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         entity.aiStatsManager.TriggerDeath         -= OnDeath;
         entity.aiInteractionManager.TriggerAttached -= OnAttached;
+    }
+
+    /// <summary>
+    /// Clears the attach/death/cooldown state that otherwise persists on a pooled instance —
+    /// without this, an AI that died once comes back with isDead == true and never attacks again.
+    /// </summary>
+    public override void ResetForSpawn()
+    {
+        base.ResetForSpawn();
+        isAttached  = false;
+        isDead      = false;
+        attackTimer = 0f;
     }
 
     private void OnDeath()    => isDead     = true;

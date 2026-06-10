@@ -11,6 +11,7 @@ public class PlayerSoundFXManager : CharacterSoundEffectManager
     [SerializeField] bool throttleInput;
     [SerializeField] int rpmIncreaseRate = 2500;
     [SerializeField] int rpmDecreaseRate = 3000;
+    [SerializeField, Range(0f, 1f)] float engineVolume = 0.08f;
 
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource engineAudioSource;
@@ -22,7 +23,7 @@ public class PlayerSoundFXManager : CharacterSoundEffectManager
 
         engineAudioSource.clip = engineSoundFX;
         engineAudioSource.loop = true;
-        engineAudioSource.volume = 0.28f;
+        engineAudioSource.volume = engineVolume;
         engineAudioSource.Play();
 
         if (audioSource == null)
