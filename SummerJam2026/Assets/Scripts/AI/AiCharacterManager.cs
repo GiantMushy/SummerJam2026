@@ -38,14 +38,12 @@ public class AiCharacterManager : CharacterManager
         aiUiManager =               GetComponent<AiUiManager>();
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        // Registered in Start (not OnEnable) so AiManager.Awake has run and instance is set.
-        AiManager.instance.Register(this);
-    }
+    // Register on enable / unregister on disable so pooled instances (activated via SetActive)
+    // re-join and leave the tick cleanly without Destroy. AiManager exists before any AI is
+    // pooled at runtime, so instance is always set by the time OnEnable runs.
+    void OnEnable() => AiManager.instance.Register(this);
 
-    void OnDestroy() => AiManager.instance.Unregister(this);
+    void OnDisable() => AiManager.instance.Unregister(this);
 
     // Called once per frame by AiManager instead of per-instance Unity messages.
     public void TickUpdate()
@@ -69,5 +67,23 @@ public class AiCharacterManager : CharacterManager
         Invoke(nameof(Remove), deathCleanupDelay);
     }
 
-    public void Remove() { Destroy(this.gameObject); }
+    public void Remove() => AiPool.instance.Despawn(this);
+
+    /// <summary>
+    /// Returns every manager's mutable runtime state to a fresh-spawn baseline so a reused
+    /// (pooled) instance behaves exactly like a newly instantiated one. Called by AiPool.Spawn
+    /// after the object is reactivated.
+    /// </summary>
+    public void PrepareForSpawn()
+    {
+        CancelInvoke();                  // clear any pending Remove from a prior death
+        transform.SetParent(null);
+        transform.rotation = Quaternion.identity;
+
+        aiStatsManager.ResetForSpawn();
+        aiCombatManager.ResetForSpawn();
+        aiLocomotionManager.ResetForSpawn();
+        aiInteractionManager.ResetForSpawn();
+        aiAnimatorManager.ResetForSpawn();
+    }
 }

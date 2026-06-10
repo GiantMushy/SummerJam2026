@@ -39,6 +39,15 @@ public class AiAnimatorManager : AnimatorManager
             if (p.nameHash == JumpHash) { animator.SetTrigger(JumpHash); return; }
     }
     public void PlayLand()   { animator.SetTrigger(LandHash); }
+
+    /// <summary>Clears triggers/bools (Death, Chasing, …) and returns to the default state for a pooled respawn.</summary>
+    public void ResetForSpawn()
+    {
+        if (animator == null) return;
+        animator.Rebind();
+        animator.Update(0f);
+        if (sprite != null) sprite.flipX = false;
+    }
     public void Flip(bool flip){
         if(sprite == null) return;
         sprite.flipX = flip;

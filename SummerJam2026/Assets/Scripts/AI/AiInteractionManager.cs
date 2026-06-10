@@ -22,6 +22,9 @@ public class AiInteractionManager : InteractionManager
         base.Start();
     }
 
+    /// <summary>Re-arms the one-shot attach latch for a pooled respawn.</summary>
+    public void ResetForSpawn() => hasAttached = false;
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (hasAttached) return;

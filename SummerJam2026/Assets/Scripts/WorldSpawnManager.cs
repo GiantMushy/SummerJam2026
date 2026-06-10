@@ -16,7 +16,6 @@ public class WorldSpawnManager : MonoBehaviour
     public static WorldSpawnManager instance;
 
     [Header("Prefabs")]
-    [SerializeField] private GameObject aiPrefab;            // Plant Default
     [SerializeField] private GameObject fuelPickupPrefab;
     [SerializeField] private GameObject healthPickupPrefab;
 
@@ -79,23 +78,30 @@ public class WorldSpawnManager : MonoBehaviour
 
     private void ProcessColumn(int absCol)
     {
-        if (aiPrefab != null && Random.value < aiDensity)
-            TrySpawn(aiPrefab, absCol, aiCenterSpread, trackForDespawn: false);
+        if (Random.value < aiDensity)
+            TrySpawnAi(absCol, aiCenterSpread);
         if (fuelPickupPrefab != null && Random.value < fuelFrequency)
-            TrySpawn(fuelPickupPrefab, absCol, fuelCenterSpread, trackForDespawn: true);
+            TrySpawnPickup(fuelPickupPrefab, absCol, fuelCenterSpread);
         if (healthPickupPrefab != null && Random.value < healthDensity)
-            TrySpawn(healthPickupPrefab, absCol, healthCenterSpread, trackForDespawn: true);
+            TrySpawnPickup(healthPickupPrefab, absCol, healthCenterSpread);
     }
 
-    private void TrySpawn(GameObject prefab, int absCol, float spread, bool trackForDespawn)
+    // AI come from the pool (reused, not Instantiated) and manage their own lifecycle via
+    // AiManager's cull / AiPool, so they aren't tracked here.
+    private void TrySpawnAi(int absCol, float spread)
+    {
+        float offset = Gaussian(spread);
+        if (EndlessWorldManager.instance.TryGetSpawnPoint(absCol, offset, out Vector2 point))
+            AiPool.instance.Spawn(point);
+    }
+
+    private void TrySpawnPickup(GameObject prefab, int absCol, float spread)
     {
         float offset = Gaussian(spread);
         if (!EndlessWorldManager.instance.TryGetSpawnPoint(absCol, offset, out Vector2 point))
             return;
 
-        GameObject obj = Instantiate(prefab, point, Quaternion.identity);
-        // AI manage their own lifecycle via AiManager's cull; only pickups need tracking here.
-        if (trackForDespawn) pickups.Add(obj);
+        pickups.Add(Instantiate(prefab, point, Quaternion.identity));
     }
 
     // ---- Despawn -----------------------------------------------------------

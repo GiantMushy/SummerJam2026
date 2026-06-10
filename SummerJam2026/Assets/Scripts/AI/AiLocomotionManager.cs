@@ -36,7 +36,11 @@ public class AiLocomotionManager : LocomotionManager
             playerTransform = GameManager.instance.player.transform;
             playerCollider  = GameManager.instance.player.GetComponent<Collider2D>();
         }
+    }
 
+    // Subscribe on enable / unsubscribe on disable so pooled instances re-wire cleanly on reuse.
+    private void OnEnable()
+    {
         entity.aiInteractionManager.TriggerChase            += OnEnterChaseRange;
         entity.aiInteractionManager.TriggerLeaveRange       += OnLeaveChaseRange;
         entity.aiInteractionManager.TriggerEnterAttackRange += OnEnterAttackRange;
@@ -45,7 +49,7 @@ public class AiLocomotionManager : LocomotionManager
         entity.aiInteractionManager.TriggerEclipse          += OnEclipseHit;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         entity.aiInteractionManager.TriggerChase            -= OnEnterChaseRange;
         entity.aiInteractionManager.TriggerLeaveRange       -= OnLeaveChaseRange;
@@ -53,6 +57,23 @@ public class AiLocomotionManager : LocomotionManager
         entity.aiInteractionManager.TriggerExitAttackRange  -= OnExitAttackRange;
         entity.aiInteractionManager.TriggerAttached         -= OnAttached;
         entity.aiInteractionManager.TriggerEclipse          -= OnEclipseHit;
+    }
+
+    /// <summary>Resets the FSM, timers, range flags and physics body for a pooled respawn.</summary>
+    public void ResetForSpawn()
+    {
+        state = MoveState.Idle;
+        timer = 0f;
+        inChaseRange  = false;
+        inAttackRange = false;
+
+        RestoreHitbox();                                 // undo any mid-jump exclude layers
+        if (bodyCollider != null) bodyCollider.isTrigger = false;  // undo attach-time trigger flip
+
+        entity.rb.bodyType        = RigidbodyType2D.Dynamic;       // undo attach-time Kinematic flip
+        entity.rb.sleepMode       = RigidbodySleepMode2D.StartAwake;
+        entity.rb.linearVelocity  = Vector2.zero;
+        entity.rb.angularVelocity = 0f;
     }
 
     // ── Range events ─────────────────────────────────────────────────────────

@@ -26,15 +26,15 @@ public class AiStatsManager : StatsManager
         entity = GetComponent<AiCharacterManager>();
     }
 
-    protected override void Start()
+    // Subscribe on enable / unsubscribe on disable so pooled instances re-wire cleanly on reuse.
+    private void OnEnable()
     {
-        base.Start();
         entity.aiInteractionManager.TriggerChase      += ActivateChaseState;
         entity.aiInteractionManager.TriggerAttached   += ActivateAttackState;
         entity.aiInteractionManager.TriggerLeaveRange += DeactivateChaseState;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         entity.aiInteractionManager.TriggerChase      -= ActivateChaseState;
         entity.aiInteractionManager.TriggerAttached   -= ActivateAttackState;
@@ -44,6 +44,13 @@ public class AiStatsManager : StatsManager
     protected override void SetInitialStats()
     {
         base.SetInitialStats();
+    }
+
+    /// <summary>Clears stat buffs and returns the AI to Idle for a pooled respawn.</summary>
+    public void ResetForSpawn()
+    {
+        ResetStats();
+        currentState = AiState.Idle;
     }
 
     // Ai can be idle, then chase is triggered when player gets close.

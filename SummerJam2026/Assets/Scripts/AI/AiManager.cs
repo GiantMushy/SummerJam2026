@@ -70,12 +70,12 @@ public class AiManager : MonoBehaviour
         Vector2 p = player.transform.position;
         float sqr = aiDespawnDistance * aiDespawnDistance;
 
-        // Backward so Destroy (which unregisters in OnDestroy) doesn't disturb earlier indices.
+        // Backward so Despawn (which unregisters via OnDisable) doesn't disturb earlier indices.
         for (int i = agents.Count - 1; i >= 0; i--)
         {
             Vector2 pos = agents[i].transform.position;
             if ((pos - p).sqrMagnitude > sqr)
-                Destroy(agents[i].gameObject);
+                AiPool.instance.Despawn(agents[i]);
         }
     }
 

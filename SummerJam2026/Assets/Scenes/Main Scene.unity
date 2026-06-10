@@ -19308,6 +19308,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   moveSpeed: 5
+  speedIncreaseRate: 0.05
+  maxSpeed: 20
   moveDirection: -1
 --- !u!58 &886739264
 CircleCollider2D:
@@ -19374,7 +19376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bfc795b47a5b44438da310a6b4b418f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldSpawnManager
-  aiPrefab: {fileID: 9138672437823122144, guid: 2dcb0bf581da11043939b0f57e00fac1, type: 3}
   fuelPickupPrefab: {fileID: 4227454112212278300, guid: 6593131df5666b64894dff20db198865, type: 3}
   healthPickupPrefab: {fileID: 2572223221373743486, guid: 67f47a0e9d286474c9b024f8ff02fcd7, type: 3}
   aiDensity: 0.7
@@ -59361,6 +59362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1364607825}
   - component: {fileID: 1364607824}
+  - component: {fileID: 1364607826}
   m_Layer: 0
   m_Name: Ai Manager
   m_TagString: Untagged
@@ -59396,6 +59398,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1364607826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364607823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae67d5560ce9284faabdd2023f2eae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AiPool
+  aiPrefab: {fileID: 9138672437823122144, guid: 2dcb0bf581da11043939b0f57e00fac1, type: 3}
+  prewarmCount: 16
+  poolParent: {fileID: 1364607825}
 --- !u!1 &1478157203
 GameObject:
   m_ObjectHideFlags: 0
