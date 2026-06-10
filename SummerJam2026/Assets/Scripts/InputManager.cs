@@ -60,6 +60,16 @@ public class InputManager : MonoBehaviour
     {
         verticalInput = Mathf.Round(movementInput.y);
         horizontalInput = Mathf.Round(movementInput.x);
+
+        if (verticalInput >= 0.1f || verticalInput <= -0.1f)
+        {
+            player.playerSoundEffectsManager.SetThrottleInput(true);
+        }
+        else
+        {
+            player.playerSoundEffectsManager.SetThrottleInput(false);
+        }
+
     }
 
     private void OnSceneChanged(Scene current, Scene next)
@@ -72,5 +82,7 @@ public class InputManager : MonoBehaviour
         {
             instance.enabled = false;
         }
+
     }
+
 }

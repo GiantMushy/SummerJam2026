@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerEffectsManager))]
 [RequireComponent(typeof(PlayerLocomotionManager))]
 [RequireComponent(typeof(PlayerInventoryManager))]
-[RequireComponent(typeof(CharacterSoundEffectManager))]
+[RequireComponent(typeof(PlayerSoundFXManager))]
 [RequireComponent(typeof(PlayerEquipmentManager))]
 [RequireComponent(typeof(PlayerAnimatorManager))]
 [RequireComponent(typeof(PlayerCombatManager))]
@@ -14,7 +14,7 @@ public class PlayerCharacterManager : CharacterManager
     [HideInInspector] public PlayerEffectsManager playerEffectsManager;
     [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
     [HideInInspector] public PlayerInventoryManager playerInventoryManager;
-    [HideInInspector] public CharacterSoundEffectManager characterSoundEffectsManager;
+    [HideInInspector] public PlayerSoundFXManager playerSoundEffectsManager;
     [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
     [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
     [HideInInspector] public PlayerCombatManager playerCombatManager;
@@ -24,7 +24,7 @@ public class PlayerCharacterManager : CharacterManager
     protected override void Awake()
     {
         base.Awake();
-        characterSoundEffectsManager = GetComponent<CharacterSoundEffectManager>();
+        playerSoundEffectsManager = GetComponent<PlayerSoundFXManager>();
         playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         playerInventoryManager = GetComponent<PlayerInventoryManager>();
         playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
@@ -46,6 +46,7 @@ public class PlayerCharacterManager : CharacterManager
     {
         base.Update();
         animationManager.UpdateAnimatorLocomotionParameters();
+        playerSoundEffectsManager.HandleEngineSoundFX();
     }
 
 
