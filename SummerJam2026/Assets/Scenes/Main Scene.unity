@@ -18820,13 +18820,13 @@ MonoBehaviour:
   baseGapWidth: 40
   minGap: 10
   gapNoiseFreq: 0.05
-  gapNoiseAmp: 75
+  gapNoiseAmp: 50
   obstacleChance: 1
   minObstacleHeight: 5
   maxObstacleHeight: 12
   minPassage: 4
-  centerCheckpointInterval: 60
-  checkpointWindow: 8
+  centerCheckpointInterval: 40
+  checkpointWindow: 30
   grassPatchFreq: 0.1
   grassPatchThreshold: 0.5
   generateRadiusWest: 60
