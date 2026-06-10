@@ -18817,22 +18817,22 @@ MonoBehaviour:
   northExtra: 4
   southExtra: 4
   blockWidth: 2
-  baseGapWidth: 30
-  minGap: 5
+  baseGapWidth: 40
+  minGap: 10
   gapNoiseFreq: 0.05
-  gapNoiseAmp: 75
-  obstacleChance: 0.302
+  gapNoiseAmp: 50
+  obstacleChance: 1
   minObstacleHeight: 5
-  maxObstacleHeight: 6
+  maxObstacleHeight: 12
   minPassage: 4
-  centerCheckpointInterval: 60
-  checkpointWindow: 8
+  centerCheckpointInterval: 40
+  checkpointWindow: 30
   grassPatchFreq: 0.1
   grassPatchThreshold: 0.5
   generateRadiusWest: 60
   generateRadiusEast: 32
   clearBuffer: 12
-  difficultyDistance: 3000
+  difficultyDistance: 100
   rebaseThreshold: 2000
   cameraManager: {fileID: 519420033}
   eclipse: {fileID: 886739263}
@@ -19377,7 +19377,7 @@ MonoBehaviour:
   aiPrefab: {fileID: 9138672437823122144, guid: 2dcb0bf581da11043939b0f57e00fac1, type: 3}
   fuelPickupPrefab: {fileID: 4227454112212278300, guid: 6593131df5666b64894dff20db198865, type: 3}
   healthPickupPrefab: {fileID: 2572223221373743486, guid: 67f47a0e9d286474c9b024f8ff02fcd7, type: 3}
-  aiDensity: 0.9
+  aiDensity: 0.7
   fuelFrequency: 0.03
   healthDensity: 0.02
   aiCenterSpread: 15

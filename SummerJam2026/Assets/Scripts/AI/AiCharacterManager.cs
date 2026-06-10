@@ -59,10 +59,14 @@ public class AiCharacterManager : CharacterManager
         aiLocomotionManager.TickFixedUpdate();
     }
 
+    [SerializeField] private float deathCleanupDelay = 1.5f;
+
     public override void Die()
     {
+        transform.SetParent(null); // detach from car immediately so the body doesn't follow
         aiStatsManager.ActivateDyingState();
         aiAnimatorManager.Die();
+        Invoke(nameof(Remove), deathCleanupDelay);
     }
 
     public void Remove() { Destroy(this.gameObject); }
